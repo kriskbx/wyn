@@ -103,7 +103,7 @@ output:
 | `exclude` | Exclude files and folders that match the given globs | Array | - | N |
 | `delete` | Delete files that are not present on the input side anymore. If versioning is used this will be ignored. | Boolean | true | N |
 | `versioning` | Choose from one of the following versioning engines: `git` | String/Booleam | false | N |
-| `encrypt` | If `true` it uses a global encryption key stored in *~/.backuppipes/encryption_key* (BackupPipes will create one for you automagically), if it's an `absolute path` it will take the contents of the provided file, if it's a simple `string` it will use the string to encrypt your data. | String/Boolean | false | N |
+| `encrypt` | If `true` it uses a global encryption key stored in *~/.wyn/encryption_key* (wyn will create one for you automagically), if it's an `absolute path` it will take the contents of the provided file, if it's a simple `string` it will use the string to encrypt your data. | String/Boolean | false | N |
 
 ## Provider Options
 
