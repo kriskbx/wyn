@@ -11,7 +11,7 @@ I'm tired. Tired of writing shell-scripts, tired of configuring rsync tasks, tir
 
 **[Installation & Usage Instructions](https://github.com/kriskbx/wyn/blob/master/DOCS.md)**
 
-**[Roadmap](https://github.com/kriskbx/wyn/blob/master/DOCS.md)**
+**[Roadmap](https://github.com/kriskbx/wyn/blob/master/ROADMAP.md)**
 
 ## License
 
