@@ -113,6 +113,17 @@ output:
 |------|-------------|------|---------|----------|
 | `path` | Absolute path | String | - | Y |
 
+### SFTP
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|----------|
+| `path` | Absolute path on server | String | - | Y |
+| `host` | Server hostname | String | - | Y |
+| `username` | Username | String | - | Y |
+| `password` | Password | String | - | N |
+| `privateKey` | Absolute path to private key file | String | - | N |
+| `timeout` | Connection timeout in seconds | Integer | 10 | N |
+| `port` | SSH port | Integer | 21 | N |
 
 ## Using wyn within a framework or existing application
 
