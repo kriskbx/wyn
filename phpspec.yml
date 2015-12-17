@@ -1,4 +1,4 @@
 suites:
     kriskbx_suite:
-        namespace: kriskbx\BackupPipes
-        psr4_prefix: kriskbx\BackupPipes
+        namespace: kriskbx\wyn
+        psr4_prefix: kriskbx\wyn
