@@ -6,4 +6,4 @@ php:
   - nightly
 install:
   - composer install
-script: ./vendor/bin/phpspec
+script: ./vendor/bin/phpspec run
