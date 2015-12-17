@@ -15,7 +15,7 @@ class IOGenerator
     /**
      * @var string
      */
-    protected $namespace = 'kriskbx\\BackupPipes\\';
+    protected $namespace = 'kriskbx\\wyn\\';
 
     /**
      * @var string
@@ -143,16 +143,16 @@ class IOGenerator
     protected function validateParam($param)
     {
         // No default value and nothing set in the config
-        if (!$param->isDefaultValueAvailable() && !isset($this->data[$param->getName()])) {
+        if (!$param->isDefaultValueAvailable() && !isset($this->data[ $param->getName() ])) {
             throw new MissingArgumentException($param->getName(), $this->name);
         }
 
         // Default value is available and nothing set in the config
-        if ($param->isDefaultValueAvailable() && !isset($this->data[$param->getName()])) {
-            return $this->params[$param->getName()] = $param->getDefaultValue();
+        if ($param->isDefaultValueAvailable() && !isset($this->data[ $param->getName() ])) {
+            return $this->params[ $param->getName() ] = $param->getDefaultValue();
         }
 
         // Something is set in the config
-        return $this->params[$param->getName()] = $this->data[$param->getName()];
+        return $this->params[ $param->getName() ] = $this->data[ $param->getName() ];
     }
 }

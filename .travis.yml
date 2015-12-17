@@ -7,3 +7,4 @@ php:
   - nightly
 install:
   - composer install
+script: phpspec
