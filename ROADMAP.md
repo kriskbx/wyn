@@ -41,7 +41,7 @@
 
 ## Upcoming features
 
-* Encrypt backup
+* Encrypt backup **since 0.1**
 * Archive backup
 * Archive Versioning
 * SVN Versioning
