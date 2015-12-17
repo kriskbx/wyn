@@ -21,10 +21,10 @@
 
 1. Make sure you already have composer installed globally. If not, check out [this guide](https://getcomposer.org/doc/00-intro.md#globally).
 2. Make sure `~/.composer/vendor/bin/` is in your `PATH` environment variable.
-3. Run this to install backuppipes:
+3. Run this to install wyn:
 
 ```
-composer global require kriskbx/backuppipes
+composer global require kriskbx/wyn
 ```
 
 ### Other install methods
