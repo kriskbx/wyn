@@ -1,0 +1,5 @@
+.idea/
+**/.DS_STORE
+/vendor/
+/logs/
+/node_modules/

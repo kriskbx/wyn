@@ -1,0 +1,40 @@
+{
+  "name": "kriskbx/wyn",
+  "description": "PHP command line interface to backup everything web-related to the (cloud)-storage of your choice.",
+  "license": "GPL v2",
+  "authors": [
+    {
+      "name": "Kris Siepert",
+      "email": "m@kris.cool"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "ext-openssl": "*",
+    "ext-mcrypt":  "*",
+    "league/flysystem": "^1.0",
+    "symfony/console": "^2.6",
+    "symfony/Yaml": "^2.6",
+    "cpliakas/git-wrapper": "^1.5",
+    "webmozart/glob": "^3.0",
+    "symfony/process": "^2.7",
+    "league/flysystem-sftp": "^1.0",
+    "phpsec/phpsec": "0.6.*"
+  },
+  "require-dev": {
+    "fabpot/php-cs-fixer": "^1.8",
+    "phpspec/phpspec": "^2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "kriskbx\\wyn\\": "src",
+      "kriskbx\\wyn\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpspec"
+  },
+  "bin": [
+    "bin/wyn"
+  ]
+}

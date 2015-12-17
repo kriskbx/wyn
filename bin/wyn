@@ -1,0 +1,33 @@
+#! /usr/bin/env php
+
+<?php
+
+use kriskbx\BackupPipes\Command\BackupSingleCommand;
+use kriskbx\BackupPipes\Command\DecryptCommand;
+use kriskbx\BackupPipes\Command\EditCommand;
+use Symfony\Component\Console\Application;
+
+$autoloadGlobal = __DIR__ . '/../../../autoload.php';
+$autoloadLocal = __DIR__ . '/../vendor/autoload.php';
+
+if (file_exists($autoloadGlobal)) {
+    require $autoloadGlobal;
+} elseif (file_exists($autoloadLocal)) {
+    require $autoloadLocal;
+} else {
+    throw new Exception("Can't find composer autoload.php");
+}
+
+
+if($argc == 1) {
+    echo "╔╗   ╔═╗  ╔═╗  ╦╔═  ╦ ╦  ╔═╗  ╔═╗  ╦  ╔═╗  ╔═╗  ╔═╗\n";
+    echo "╠╩╗  ╠═╣  ║    ╠╩╗  ║ ║  ╠═╝  ╠═╝  ║  ╠═╝  ║╣   ╚═╗\n";
+    echo "╚═╝  ╩ ╩  ╚═╝  ╩ ╩  ╚═╝  ╩    ╩    ╩  ╩    ╚═╝  ╚═╝\n\n";
+}
+
+
+$app = new Application('BackupPipes', file_get_contents(__DIR__ . '/../VERSION'));
+$app->add(new BackupSingleCommand);
+$app->add(new EditCommand);
+$app->add(new DecryptCommand);
+$app->run();

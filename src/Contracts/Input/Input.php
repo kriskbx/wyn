@@ -1,0 +1,68 @@
+<?php
+
+namespace kriskbx\wyn\Contracts\Input;
+
+interface Input
+{
+    /**
+     * Does the current implementation supports resource streaming?
+     *
+     * @return bool
+     */
+    public function supportsStreams();
+
+    /**
+     * Check whether a file exists.
+     *
+     * @param string $path
+     *
+     * @return array|bool|null
+     */
+    public function has($path);
+
+    /**
+     * Read a file.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function read($path);
+
+    /**
+     * List contents of a directory.
+     *
+     * @param string $directory
+     * @param bool   $recursive
+     *
+     * @return array
+     */
+    public function listContents($directory = '', $recursive = false);
+
+    /**
+     * Get the timestamp of a file.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function getTimestamp($path);
+
+    /**
+     * Get filesize.
+     *
+     * @param string $path
+     *
+     * @return int|false
+     */
+    public function getSize($path);
+
+    /**
+     * Get config part by the given key.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function config($key);
+}
