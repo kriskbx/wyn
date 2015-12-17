@@ -15,7 +15,7 @@ class GlobalConfig
      */
     public static function getConfigDir()
     {
-        return $_SERVER['HOME'].DIRECTORY_SEPARATOR.'.backuppipes'.DIRECTORY_SEPARATOR;
+        return $_SERVER['HOME'].DIRECTORY_SEPARATOR.'.wyn'.DIRECTORY_SEPARATOR;
     }
 
     /**
