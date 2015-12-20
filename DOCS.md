@@ -123,7 +123,7 @@ output:
 | `password` | Password | String | - | N |
 | `privateKey` | Absolute path to private key file | String | - | N |
 | `timeout` | Connection timeout in seconds | Integer | 10 | N |
-| `port` | SSH port | Integer | 21 | N |
+| `port` | SSH port | Integer | 22 | N |
 
 ## Using wyn within a framework or existing application
 

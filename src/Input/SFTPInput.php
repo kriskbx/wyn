@@ -19,7 +19,7 @@ class SFTPInput extends FlySystemInput
      * @param array  $exclude
      * @param bool   $ignore
      */
-    public function __construct($path, $host, $username, $password = null, $privateKey = null, $timeout = 10, $port = 21, $exclude = [], $ignore = true)
+    public function __construct($path, $host, $username, $password = null, $privateKey = null, $timeout = 10, $port = 22, $exclude = [], $ignore = true)
     {
         parent::__construct($exclude, $ignore);
 
