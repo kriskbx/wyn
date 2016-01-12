@@ -9,7 +9,7 @@
 
 I'm tired. Tired of writing shell-scripts, tired of configuring rsync tasks, tired of dumping databases, tired of crappy shared-hosts without ssh-access and tired of everything else backup-related. Creating backups can be very frustrating today. wyn will change that. It's not the fastest (transfer-rate), not the cheapest (cpu, traffic) and not the smallest (backup-size) backup-solution out there, but it's one thing: **damn simple**. Okay two things: **damn simple** and **powerful**.
 
-**[Installation & Usage Instructions](https://github.com/kriskbx/wyn/blob/master/DOCS.md)**
+**[Installation & Usage Instructions](https://github.com/kriskbx/wyn/blob/master/DOCUMENTATION.md)**
 
 **[Roadmap](https://github.com/kriskbx/wyn/blob/master/ROADMAP.md)**
 
