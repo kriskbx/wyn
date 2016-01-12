@@ -24,180 +24,186 @@ use ReflectionObject;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-trait SyncGenerator {
-	/**
-	 * Create a new SyncSettings object. Overwrite settings from config with command line option.
-	 *
-	 * @param $inputName
-	 * @param $outputName
-	 * @param InputInterface $input
-	 * @param ConfigContract $config
-	 *
-	 * @return SyncSettings
-	 */
-	protected function createSettings( $inputName, $outputName, InputInterface $input, ConfigContract $config ) {
-		$inputOptions  = $config->getInput( $inputName );
-		$outputOptions = $config->getOutput( $outputName );
+trait SyncGenerator
+{
+    /**
+     * Create a new SyncSettings object. Overwrite settings from config with command line option.
+     *
+     * @param $inputName
+     * @param $outputName
+     * @param InputInterface $input
+     * @param ConfigContract $config
+     *
+     * @return SyncSettings
+     */
+    protected function createSettings($inputName, $outputName, InputInterface $input, ConfigContract $config)
+    {
+        $inputOptions = $config->getInput($inputName);
+        $outputOptions = $config->getOutput($outputName);
 
-		$settings = new SyncSettings();
+        $settings = new SyncSettings();
 
-		foreach ( $settings as $key => $setting ) {
-			if ( $input->hasOption( $key ) && $value = $input->getOption( $key ) ) {
-				call_user_func_array( [ $settings, 'set' . ucfirst( $key ) ], [ $value ] );
+        foreach ($settings as $key => $setting) {
+            if ($input->hasOption($key) && $value = $input->getOption($key)) {
+                call_user_func_array([$settings, 'set'.ucfirst($key)], [$value]);
+            } elseif (isset($inputOptions[ $key ]) && in_array($key, SyncSettings::getInputBaseOptions())) {
+                call_user_func_array([$settings, 'set'.ucfirst($key)], [$inputOptions[ $key ]]);
+            } elseif (isset($inputOptions[ str_replace('Input', '', $key) ]) && in_array(str_replace('Input', '', $key), SyncSettings::getInputBaseOptions())) {
+                call_user_func_array([$settings, 'set'.ucfirst($key)], [$inputOptions[ str_replace('Input', '', $key) ]]);
+            } elseif (isset($outputOptions[ $key ]) && in_array($key, SyncSettings::getOutputBaseOptions())) {
+                call_user_func_array([$settings, 'set'.ucfirst($key)], [$outputOptions[ $key ]]);
+            } elseif (isset($outputOptions[ str_replace('Output', '', $key) ]) && in_array(str_replace('Output', '', $key), SyncSettings::getOutputBaseOptions())) {
+                call_user_func_array([$settings, 'set'.ucfirst($key)], [$outputOptions[ str_replace('Output', '', $key) ]]);
+            }
+        }
 
-			} elseif ( isset( $inputOptions[ $key ] ) && in_array( $key, SyncSettings::getInputBaseOptions() ) ) {
-				call_user_func_array( [ $settings, 'set' . ucfirst( $key ) ], [ $inputOptions[ $key ] ] );
-			} elseif ( isset( $inputOptions[ str_replace('Input', '', $key) ] ) && in_array( str_replace('Input', '', $key), SyncSettings::getInputBaseOptions() ) ) {
-				call_user_func_array( [ $settings, 'set' . ucfirst( $key ) ], [ $inputOptions[ str_replace('Input', '', $key) ] ] );
+        return $settings;
+    }
 
-			} elseif ( isset( $outputOptions[ $key ] ) && in_array( $key, SyncSettings::getOutputBaseOptions() ) ) {
-				call_user_func_array( [ $settings, 'set' . ucfirst( $key ) ], [ $outputOptions[ $key ] ] );
-			} elseif ( isset( $outputOptions[ str_replace('Output', '', $key) ] ) && in_array( str_replace('Output', '', $key), SyncSettings::getOutputBaseOptions() ) ) {
-				call_user_func_array( [ $settings, 'set' . ucfirst( $key ) ], [ $outputOptions[ str_replace('Output', '', $key) ] ] );
-			}
-		}
+    /**
+     * @param string         $name
+     * @param ConfigContract $config
+     *
+     * @return InputContract
+     */
+    protected function createInput($name, ConfigContract $config)
+    {
+        return (new IOGenerator($name, $config->getInput($name)))->validate()->make();
+    }
 
-		return $settings;
-	}
+    /**
+     * @param string         $name
+     * @param ConfigContract $config
+     * @param BackupCommand  $command
+     *
+     * @throws PathNotFoundException
+     * @throws Exception
+     *
+     * @return OutputContract
+     */
+    protected function createOutput($name, ConfigContract $config, BackupCommand $command = null)
+    {
+        $command = $this->getCommand($command);
 
-	/**
-	 * @param string $name
-	 * @param ConfigContract $config
-	 *
-	 * @return InputContract
-	 */
-	protected function createInput( $name, ConfigContract $config ) {
-		return ( new IOGenerator( $name, $config->getInput( $name ) ) )->validate()->make();
-	}
+        try {
+            return (new IOGenerator($name, $config->getOutput($name), 'output'))->validate()->make();
+        } catch (PathNotFoundException $e) {
+            // If we have access to the actual command object we can ask the
+            // user if he or she wants to create the missing output directory
+            // and finally create the directory for the user.
+            if (!$command) {
+                throw $e;
+            }
 
-	/**
-	 * @param string $name
-	 * @param ConfigContract $config
-	 * @param BackupCommand $command
-	 *
-	 * @throws PathNotFoundException
-	 * @throws Exception
-	 *
-	 * @return OutputContract
-	 */
-	protected function createOutput( $name, ConfigContract $config, BackupCommand $command = null ) {
-		$command = $this->getCommand( $command );
+            $helper = $command->getHelper('question');
+            $question = new ConfirmationQuestion("<comment>The directory '".$e->getPath()."' doesn't exist. Create it?</comment> <info>[y|n]</info>\n", false);
 
-		try {
-			return ( new IOGenerator( $name, $config->getOutput( $name ), 'output' ) )->validate()->make();
-		} catch ( PathNotFoundException $e ) {
-			// If we have access to the actual command object we can ask the
-			// user if he or she wants to create the missing output directory
-			// and finally create the directory for the user.
-			if ( ! $command ) {
-				throw $e;
-			}
+            if (!$helper->ask($input = $command->getInput(), $output = $command->getOutput(), $question)) {
+                throw $e;
+            }
 
-			$helper   = $command->getHelper( 'question' );
-			$question = new ConfirmationQuestion( "<comment>The directory '" . $e->getPath() . "' doesn't exist. Create it?</comment> <info>[y|n]</info>\n", false );
+            mkdir($e->getPath(), 0777, true);
+            $output->writeln('');
 
-			if ( ! $helper->ask( $input = $command->getInput(), $output = $command->getOutput(), $question ) ) {
-				throw $e;
-			}
+            return $this->createOutput($input->getArgument('output'), $config);
+        }
+    }
 
-			mkdir( $e->getPath(), 0777, true );
-			$output->writeln( '' );
+    /**
+     * Get default console output.
+     *
+     * @param BackupCommand $command
+     *
+     * @return SyncOutput
+     */
+    protected function createConsoleOutput(BackupCommand $command)
+    {
+        if ($command->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $console = new SyncConsoleTextOutput($command->getOutput());
+        } else {
+            $console = new SyncConsoleProgressOutput($command->getOutput());
+        }
 
-			return $this->createOutput( $input->getArgument( 'output' ), $config );
-		}
-	}
+        return $console;
+    }
 
-	/**
-	 * Get default console output.
-	 *
-	 * @param BackupCommand $command
-	 *
-	 * @return SyncOutput
-	 */
-	protected function createConsoleOutput( BackupCommand $command ) {
-		if ( $command->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE ) {
-			$console = new SyncConsoleTextOutput( $command->getOutput() );
-		} else {
-			$console = new SyncConsoleProgressOutput( $command->getOutput() );
-		}
+    /**
+     * Get default versioning middleware.
+     *
+     * @param string               $input
+     * @param SyncSettingsContract $settings
+     * @param Application          $app
+     */
+    protected function createVersioningMiddleware($input, SyncSettingsContract $settings, Application &$app)
+    {
+        if ($settings->versioning() !== 'git') {
+            return;
+        }
 
-		return $console;
-	}
+        $app->middleware(new VersioningMiddleware(new GitVersioning($input)));
+    }
 
-	/**
-	 * Get default versioning middleware.
-	 *
-	 * @param string $input
-	 * @param SyncSettingsContract $settings
-	 * @param Application $app
-	 */
-	protected function createVersioningMiddleware( $input, SyncSettingsContract $settings, Application &$app ) {
-		if ( $settings->versioning() !== 'git' ) {
-			return;
-		}
+    /**
+     * Create default encryption middleware.
+     *
+     * @param SyncSettingsContract $settings
+     * @param Application          $app
+     * @param BackupCommand|null   $command
+     *
+     * @throws PathNotFoundException
+     */
+    protected function createEncryptionMiddleware(SyncSettingsContract $settings, Application &$app, BackupCommand $command = null)
+    {
+        if ($settings->encrypt() === false) {
+            return;
+        }
 
-		$app->middleware( new VersioningMiddleware( new GitVersioning( $input ) ) );
-	}
+        $command = $this->getCommand($command);
 
-	/**
-	 * Create default encryption middleware.
-	 *
-	 * @param SyncSettingsContract $settings
-	 * @param Application $app
-	 * @param BackupCommand|null $command
-	 *
-	 * @throws PathNotFoundException
-	 */
-	protected function createEncryptionMiddleware( SyncSettingsContract $settings, Application &$app, BackupCommand $command = null ) {
-		if ( $settings->encrypt() === false ) {
-			return;
-		}
+        try {
+            $encryptionMiddleware = new EncryptionMiddleware($settings->encrypt());
+            $app->middleware($encryptionMiddleware);
+        } catch (PathNotFoundException $e) {
+            // If we have access to the actual command object we can ask the user
+            // if a new random encryption key should be generated and do this task
+            // for him or her.
+            if (!$command) {
+                throw $e;
+            }
 
-		$command = $this->getCommand( $command );
+            $helper = $command->getHelper('question');
+            $question = new ConfirmationQuestion("<comment>The encryption-key '".$e->getPath()."' doesn't exist. Create a new random one?</comment> <info>[y|n]</info>\n", false);
+            if (!$helper->ask($input = $command->getInput(), $output = $command->getOutput(), $question)) {
+                throw $e;
+            }
 
-		try {
-			$encryptionMiddleware = new EncryptionMiddleware( $settings->encrypt() );
-			$app->middleware( $encryptionMiddleware );
-		} catch ( PathNotFoundException $e ) {
-			// If we have access to the actual command object we can ask the user
-			// if a new random encryption key should be generated and do this task
-			// for him or her.
-			if ( ! $command ) {
-				throw $e;
-			}
+            touch($e->getPath());
+            chmod($e->getPath(), 0600);
+            file_put_contents($e->getPath(), (new Rand())->bytes(32));
 
-			$helper   = $command->getHelper( 'question' );
-			$question = new ConfirmationQuestion( "<comment>The encryption-key '" . $e->getPath() . "' doesn't exist. Create a new random one?</comment> <info>[y|n]</info>\n", false );
-			if ( ! $helper->ask( $input = $command->getInput(), $output = $command->getOutput(), $question ) ) {
-				throw $e;
-			}
+            $output->writeln('');
+            $this->createEncryptionMiddleware($settings, $app, $command);
+        }
+    }
 
-			touch( $e->getPath() );
-			chmod( $e->getPath(), 0600 );
-			file_put_contents( $e->getPath(), ( new Rand() )->bytes( 32 ) );
+    /**
+     * Get command object.
+     *
+     * @param null $command
+     *
+     * @return $this|BackupCommandContract|null
+     */
+    protected function getCommand($command = null)
+    {
+        if ($command) {
+            return $command;
+        }
 
-			$output->writeln( '' );
-			$this->createEncryptionMiddleware( $settings, $app, $command );
-		}
-	}
+        $reflection = new ReflectionObject($this);
+        if ($reflection->implementsInterface(BackupCommandContract::class)) {
+            return $this;
+        }
 
-	/**
-	 * Get command object.
-	 *
-	 * @param null $command
-	 *
-	 * @return $this|BackupCommandContract|null
-	 */
-	protected function getCommand( $command = null ) {
-		if ( $command ) {
-			return $command;
-		}
-
-		$reflection = new ReflectionObject( $this );
-		if ( $reflection->implementsInterface( BackupCommandContract::class ) ) {
-			return $this;
-		}
-
-		return;
-	}
+        return;
+    }
 }

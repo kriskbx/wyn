@@ -122,7 +122,8 @@ class NullOutput extends Output
      *
      * @return array|false
      */
-    public function read( $path ) {
+    public function read($path)
+    {
         // TODO: Implement read() method.
     }
 }

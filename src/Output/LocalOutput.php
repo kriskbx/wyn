@@ -12,7 +12,7 @@ class LocalOutput extends FlySystemOutput
     /**
      * Constructor.
      *
-     * @param string      $path
+     * @param string $path
      *
      * @throws PathNotFoundException
      */

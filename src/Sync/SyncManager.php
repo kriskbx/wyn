@@ -253,7 +253,7 @@ class SyncManager implements SyncManagerContract
 
     /**
      * Exclude the given path?
-     * TODO: extract (to trait?)
+     * TODO: extract (to trait?).
      *
      * @param $path
      * @param $globArray

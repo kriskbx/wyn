@@ -66,8 +66,9 @@ class Application
             $outputHelper = new SyncNullOutput();
         }
 
-        if(!$settings)
+        if (!$settings) {
             $settings = new SyncSettings();
+        }
 
         $inputHandler->applySettings($settings);
         $outputHandler->applySettings($settings);

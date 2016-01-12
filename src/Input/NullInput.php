@@ -60,7 +60,8 @@ class NullInput extends Input
      *
      * @return int|false
      */
-    public function getSize( $path ) {
+    public function getSize($path)
+    {
         // TODO: Implement getSize() method.
     }
 }

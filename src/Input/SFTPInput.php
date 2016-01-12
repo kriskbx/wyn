@@ -19,8 +19,7 @@ class SFTPInput extends FlySystemInput
      */
     public function __construct(
         $path, $host, $username, $password = null, $privateKey = null, $timeout = 10, $port = 22
-    )
-    {
+    ) {
         $adapter = new SftpAdapter([
             'host' => $host,
             'port' => $port,

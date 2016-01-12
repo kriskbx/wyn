@@ -119,14 +119,14 @@ interface Output
      * Set something in the config.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      */
-    public function setConfig( $key, $value );
+    public function setConfig($key, $value);
 
     /**
      * Apply the given settings to this consumer.
      *
      * @param SyncSettingsContract $settings
      */
-    public function applySettings( SyncSettingsContract $settings );
+    public function applySettings(SyncSettingsContract $settings);
 }
