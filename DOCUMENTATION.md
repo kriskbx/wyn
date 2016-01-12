@@ -105,7 +105,7 @@ output:
 | `versioning` | Choose from one of the following versioning engines: `git` | String/Booleam | false | N |
 | `encrypt` | If `true` it uses a global encryption key stored in *~/.wyn/encryption_key* (wyn will create one for you automagically), if it's an `absolute path` it will take the contents of the provided file, if it's a simple `string` it will use the string to encrypt your data. | String/Boolean | false | N |
 
-## Provider Options
+## Shared Provider Options
 
 ### Local Filesystem
 
@@ -124,6 +124,19 @@ output:
 | `privateKey` | Absolute path to private key file | String | - | N |
 | `timeout` | Connection timeout in seconds | Integer | 10 | N |
 | `port` | SSH port | Integer | 22 | N |
+
+### FTP
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|----------|
+| `root` | Absolute root path on server | String | / | Y |
+| `host` | Server hostname | String | - | Y |
+| `username` | Username | String | - | Y |
+| `password` | Password | String | - | N |
+| `timeout` | Connection timeout in seconds | Integer | 30 | N |
+| `ssl` | Use SSL? | Boolean | true | N |
+| `passive` | Use passive mode | Boolean | true | N |
+| `port` | SSH port | Integer | 21 | N |
 
 ## Using wyn within a framework or existing application
 

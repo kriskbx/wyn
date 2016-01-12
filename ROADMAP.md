@@ -16,7 +16,7 @@
 * Amazon S3 V2/V3
 * Azure
 * Copy.com
-* FTP
+* FTP **since 0.2**
 * SFTP **since 0.1**
 * GridFS
 * Rackspace
@@ -31,8 +31,8 @@
 * Amazon S3 V2/V3
 * Azure
 * Copy.com
-* FTP
-* SFTP
+* FTP **since 0.2**
+* SFTP **since 0.2**
 * GridFS
 * Rackspace
 * WebDAV

@@ -17,11 +17,9 @@ class FTPOutput extends FlySystemOutput
      * @param bool   $passive
      * @param bool   $ssl
      * @param int    $timeout
-     * @param array  $exclude
      */
     public function __construct(
-        $host, $username, $password, $root = '/', $port = 21, $passive = true, $ssl = true,
-        $timeout = 30, $exclude = []
+        $host, $username, $password, $root = '/', $port = 21, $passive = true, $ssl = true, $timeout = 30
     ) {
         $this->setFilesystem(new Ftp([
             'host' => $host,
