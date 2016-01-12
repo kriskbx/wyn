@@ -60,8 +60,8 @@ abstract class BackupCommand extends Command implements BackupCommandContract
      */
     protected function setDefaultOptions()
     {
-        $this->addOption('skipInputErrors', null, InputOption::VALUE_OPTIONAL, 'Ignore and skip errors on the input side. <info>[Overrides config]</info>')
-            ->addOption('skipOutputErrors', null, InputOption::VALUE_OPTIONAL, 'Ignore and skip errors on the output side. <info>[Overrides config]</info>')
+        $this->addOption('ignoreInput', null, InputOption::VALUE_OPTIONAL, 'Ignore and skip errors on the input side. <info>[Overrides config]</info>')
+            ->addOption('ignoreOutput', null, InputOption::VALUE_OPTIONAL, 'Ignore and skip errors on the output side. <info>[Overrides config]</info>')
             ->addOption('excludeInput', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Exclude files on the input side, accepts glob. <info>[Overrides config]</info>')
             ->addOption('excludeOutput', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Exclude files on the output side, accepts glob. <info>[Overrides config]</info>')
             ->addOption('delete', null, InputOption::VALUE_OPTIONAL, 'Delete files on the output side. <info>[Overrides config]</info>');

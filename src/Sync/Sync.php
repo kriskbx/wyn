@@ -76,15 +76,6 @@ class Sync implements SyncContract
     {
         $this->out(SyncOutput::STARTUP_MESSAGE);
 
-        if (!$this->settings->getInput()) {
-            $this->settings->setInput($this->manager->getInput());
-        }
-
-        if (!$this->settings->getOutput()) {
-            $this->settings->setOutput($this->manager->getOutput());
-        }
-
-        $this->settings->init();
         $this->manager->init();
 
         $this->addNewFilesToQueue(

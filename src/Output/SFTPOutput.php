@@ -15,15 +15,10 @@ class SFTPOutput extends FlySystemOutput {
 	 * @param string $privateKey
 	 * @param int $timeout
 	 * @param int $port
-	 * @param array $exclude
-	 * @param bool $ignore
-	 * @param bool $delete
-	 * @param bool $versioning
-	 * @param bool $encrypt
 	 */
-	public function __construct( $path, $host, $username, $password = null, $privateKey = null, $timeout = 10, $port = 22, $exclude = [ ], $ignore = true, $delete = true, $versioning = false, $encrypt = false ) {
-		parent::__construct( $exclude, $ignore, $delete, $versioning, $encrypt );
-
+	public function __construct(
+			$path, $host, $username, $password = null, $privateKey = null, $timeout = 10, $port = 22
+	) {
 		$adapter = new SftpAdapter( [
 			'host'          => $host,
 			'port'          => $port,

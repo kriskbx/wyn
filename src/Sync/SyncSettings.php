@@ -6,264 +6,138 @@ use Exception;
 use kriskbx\wyn\Contracts\Input\Input as InputContract;
 use kriskbx\wyn\Contracts\Output\Output as OutputContract;
 use kriskbx\wyn\Contracts\Sync\SyncSettings as SyncSettingsContract;
+use ReflectionClass;
 
 /**
  * Class SyncSettings.
  */
-class SyncSettings implements SyncSettingsContract
-{
-    /**
-     * Skip errors on the input side?
-     *
-     * @var bool
-     */
-    protected $skipInputErrors;
+class SyncSettings implements SyncSettingsContract {
+	/**
+	 * Skip errors on the input side?
+	 *
+	 * @belongsTo input
+	 * @var bool
+	 */
+	public $ignoreInput;
 
-    /**
-     *  Skip errors on the output side?
-     *
-     * @var bool
-     */
-    protected $skipOutputErrors;
+	/**
+	 *  Skip errors on the output side?
+	 *
+	 * @belongsTo output
+	 * @var bool
+	 */
+	public $ignoreOutput;
 
-    /**
-     * Delete files?
-     *
-     * @var bool
-     */
-    protected $delete;
+	/**
+	 * Delete files?
+	 *
+	 * @belongsTo output
+	 * @var bool
+	 */
+	public $delete;
 
-    /**
-     * Exclude on the input side.
-     *
-     * @var array
-     */
-    protected $excludeInput;
+	/**
+	 * Exclude on the input side.
+	 *
+	 * @belongsTo input
+	 * @var array
+	 */
+	public $excludeInput;
 
-    /**
-     * Exclude on the output side.
-     *
-     * @var array
-     */
-    protected $excludeOutput;
+	/**
+	 * Exclude on the output side.
+	 *
+	 * @belongsTo output
+	 * @var array
+	 */
+	public $excludeOutput;
 
-    /**
-     * Input.
-     *
-     * @var InputContract
-     */
-    protected $inputHandler;
+	/**
+	 * @belongsTo output
+	 * @var bool
+	 */
+	public $versioning;
 
-    /**
-     * Output.
-     *
-     * @var OutputContract
-     */
-    protected $outputHandler;
+	/**
+	 * @belongsTo output
+	 * @var bool
+	 */
+	public $encrypt;
 
-    /**
-     * SyncSettings constructor.
-     * Favors the given parameters from the Constructor over the ones defined in the config and stored in input- and
-     * outputHandler.
-     *
-     * @param InputContract  $inputHandler
-     * @param OutputContract $outputHandler
-     * @param array          $excludeInput
-     * @param array          $excludeOutput
-     * @param bool           $skipInputErrors
-     * @param bool           $skipOutputErrors
-     * @param bool           $delete
-     */
-    public function __construct($excludeInput = null, $excludeOutput = null, $skipInputErrors = null, $skipOutputErrors = null, $delete = null, InputContract &$inputHandler = null, OutputContract &$outputHandler = null)
-    {
-        $this->inputHandler = $inputHandler;
-        $this->outputHandler = $outputHandler;
-        $this->excludeInput = $excludeInput;
-        $this->excludeOutput = $excludeOutput;
-        $this->skipInputErrors = $skipInputErrors;
-        $this->skipOutputErrors = $skipOutputErrors;
-        $this->delete = $delete;
-    }
+	/**
+	 * SyncSettings constructor.
+	 *
+	 * @param array $excludeInput
+	 * @param array $excludeOutput
+	 * @param bool $skipInputErrors
+	 * @param bool $skipOutputErrors
+	 * @param bool $delete
+	 * @param bool $versioning
+	 * @param bool $encrypt
+	 */
+	public function __construct(
+			$excludeInput = [ ], $excludeOutput = [ ], $skipInputErrors = true, $skipOutputErrors = true,
+			$delete = true, $versioning = false, $encrypt = false
+	) {
+		$this->excludeInput  = $excludeInput;
+		$this->excludeOutput = $excludeOutput;
+		$this->ignoreInput   = $skipInputErrors;
+		$this->ignoreOutput  = $skipOutputErrors;
+		$this->delete        = $delete;
+		$this->versioning    = $versioning;
+		$this->encrypt       = $encrypt;
+	}
 
-/**
- * Set settings.
- */
-public function init()
-{
-    if (!$this->inputHandler || !$this->outputHandler) {
-        throw new Exception('Input- and OutputHandler not set in SyncSettings');
-    }
+	/**
+	 * Automagically set and get properties.
+	 *
+	 * @param $name
+	 * @param $arguments
+	 */
+	public function __call( $name, $arguments ) {
 
-    $this->skipInputErrors = (
-    !is_null($this->skipInputErrors)
-        ? $this->parseBoolean($this->skipInputErrors)
-        : $this->inputHandler->config('ignore')
-    );
+		if ( $this->hasProperty( $name ) ) { // GET
+			return $this->$name;
+		} elseif (
+			substr( $name, 0, 3 ) === 'set'
+			&& $this->hasProperty( $realName = lcfirst( substr( $name, 3 ) ) )
+		) { // SET
+			if ( isset( $arguments[0] ) ) {
+				$this->$realName = $arguments[0];
+			}
+		} else {
+			throw new \BadMethodCallException;
+		}
+	}
 
-    $this->skipOutputErrors = (
-    !is_null($this->skipOutputErrors)
-        ? $this->parseBoolean($this->skipOutputErrors)
-        : $this->outputHandler->config('ignore')
-    );
+	/**
+	 * Has this class the given property?
+	 *
+	 * @param $name
+	 *
+	 * @return bool
+	 */
+	protected function hasProperty( $name ) {
+		$reflection = new ReflectionClass( __CLASS__ );
 
-    $this->delete = (
-    !is_null($this->delete)
-        ? $this->parseBoolean($this->delete)
-        : $this->outputHandler->config('delete')
-    );
+		return $reflection->hasProperty( $name );
+	}
 
-    $this->excludeInput = (
-    !is_null($this->excludeInput)
-        ? $this->excludeInput
-        : $this->inputHandler->config('exclude')
-    );
+	/**
+	 * Get options of this input.
+	 *
+	 * @return array
+	 */
+	public static function getOutputBaseOptions() {
+		return [ 'exclude', 'ignore', 'delete', 'versioning', 'encrypt' ];
+	}
 
-    $this->excludeOutput = (
-    !is_null($this->excludeOutput)
-        ? $this->excludeOutput
-        : $this->outputHandler->config('exclude')
-    );
-}
-
-/**
- * Parse boolean.
- *
- * @param mixed $input
- *
- * @return bool
- */
-protected function parseBoolean($input)
-{
-    return ($input === true || $input === 1 || $input === '1' || $input === 'true');
-}
-
-/**
- * Get skipInputErrors.
- *
- * @return bool
- */
-public function skipInputErrors()
-{
-    return $this->skipInputErrors;
-}
-
-/**
- * Get skipOutputErrors.
- *
- * @return bool
- */
-public function skipOutputErrors()
-{
-    return $this->skipOutputErrors;
-}
-
-/**
- * Get delete.
- *
- * @return bool
- */
-public function delete()
-{
-    return $this->delete;
-}
-
-/**
- * Get excludeInput.
- *
- * @return array|null
- */
-public function excludeInput()
-{
-    return $this->excludeInput;
-}
-
-/**
- * Get excludeOutput.
- *
- * @return array|null
- */
-public function excludeOutput()
-{
-    return $this->excludeOutput;
-}
-
-/**
- * Set input.
- *
- * @param InputContract $input
- */
-public function setInput(InputContract $input)
-{
-    $this->inputHandler = $input;
-}
-
-/**
- * Get input.
- *
- * @return InputContract
- */
-public function getInput()
-{
-    return $this->inputHandler;
-}
-
-/**
- * Get output.
- *
- * @return OutputContract
- */
-public function getOutput()
-{
-    return $this->outputHandler;
-}
-
-/**
- * Set output.
- *
- * @param OutputContract $output
- */
-public function setOutput(OutputContract $output)
-{
-    $this->outputHandler = $output;
-}
-
-/**
- * @param bool $skipInputErrors
- */
-public function setSkipInputErrors($skipInputErrors)
-{
-    $this->skipInputErrors = $skipInputErrors;
-}
-
-/**
- * @param bool $skipOutputErrors
- */
-public function setSkipOutputErrors($skipOutputErrors)
-{
-    $this->skipOutputErrors = $skipOutputErrors;
-}
-
-/**
- * @param bool $delete
- */
-public function setDelete($delete)
-{
-    $this->delete = $delete;
-}
-
-/**
- * @param array $excludeInput
- */
-public function setExcludeInput($excludeInput)
-{
-    $this->excludeInput = $excludeInput;
-}
-
-/**
- * @param array $excludeOutput
- */
-public function setExcludeOutput($excludeOutput)
-{
-    $this->excludeOutput = $excludeOutput;
-}
+	/**
+	 * Get options of this input.
+	 *
+	 * @return array
+	 */
+	public static function getInputBaseOptions() {
+		return [ 'exclude', 'ignore' ];
+	}
 }

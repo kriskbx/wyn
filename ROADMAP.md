@@ -23,6 +23,7 @@
 * WebDAV
 * PHPCR
 * Local Filesystem **since 0.1**
+* Openshift
 
 ## Planned platforms to backup to
 

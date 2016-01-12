@@ -2,6 +2,8 @@
 
 namespace kriskbx\wyn\Contracts\Output;
 
+use kriskbx\wyn\Contracts\Sync\SyncSettings as SyncSettingsContract;
+
 interface Output
 {
     /**
@@ -112,4 +114,19 @@ interface Output
      * @return mixed
      */
     public function config($key);
+
+    /**
+     * Set something in the config.
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setConfig( $key, $value );
+
+    /**
+     * Apply the given settings to this consumer.
+     *
+     * @param SyncSettingsContract $settings
+     */
+    public function applySettings( SyncSettingsContract $settings );
 }

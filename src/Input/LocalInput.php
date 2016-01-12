@@ -13,14 +13,11 @@ class LocalInput extends FlySystemInput
      * Constructor.
      *
      * @param array $path
-     * @param array $exclude
-     * @param bool  $ignore
      *
      * @throws PathNotFoundException
      */
-    public function __construct($path, $exclude = [], $ignore = true)
+    public function __construct($path)
     {
-        parent::__construct($exclude, $ignore);
         $this->path = $path;
 
         if (!file_exists($this->path)) {

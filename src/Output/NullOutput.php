@@ -114,4 +114,15 @@ class NullOutput extends Output
     {
         return 0;
     }
+
+    /**
+     * Read a file.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function read( $path ) {
+        // TODO: Implement read() method.
+    }
 }

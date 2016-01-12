@@ -52,4 +52,15 @@ class NullInput extends Input
     {
         return false;
     }
+
+    /**
+     * Get filesize.
+     *
+     * @param string $path
+     *
+     * @return int|false
+     */
+    public function getSize( $path ) {
+        // TODO: Implement getSize() method.
+    }
 }

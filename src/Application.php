@@ -60,11 +60,17 @@ class Application
      * @return SyncContract
      */
     public static function createSync(
-        InputContract $inputHandler, OutputContract $outputHandler, SyncSettingsContract $settings, SyncOutputContract &$outputHelper = null
+        InputContract $inputHandler, OutputContract $outputHandler, SyncSettingsContract $settings = null, SyncOutputContract &$outputHelper = null
     ) {
         if (is_null($outputHelper)) {
             $outputHelper = new SyncNullOutput();
         }
+
+        if(!$settings)
+            $settings = new SyncSettings();
+
+        $inputHandler->applySettings($settings);
+        $outputHandler->applySettings($settings);
 
         return new Sync(
             new SyncManager($inputHandler, $outputHandler, $settings),
@@ -90,7 +96,7 @@ class Application
         $this->sync = self::createSync(
             $inputHandler,
             $outputHandler,
-            ($settings ? $settings : new SyncSettings()),
+            $settings,
             $outputHelper
         );
     }

@@ -2,6 +2,7 @@
 
 <?php
 
+use kriskbx\wyn\Command\BackupAllCommand;
 use kriskbx\wyn\Command\BackupSingleCommand;
 use kriskbx\wyn\Command\DecryptCommand;
 use kriskbx\wyn\Command\EditCommand;
@@ -26,6 +27,7 @@ if ( $argc == 1 ) {
 
 $app = new Application( 'wyn', file_get_contents( __DIR__ . '/../VERSION' ) );
 $app->add( new BackupSingleCommand );
+$app->add( new BackupAllCommand );
 $app->add( new EditCommand );
 $app->add( new DecryptCommand );
 $app->run();

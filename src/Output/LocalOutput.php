@@ -13,17 +13,11 @@ class LocalOutput extends FlySystemOutput
      * Constructor.
      *
      * @param string      $path
-     * @param array       $exclude
-     * @param bool        $ignore
-     * @param bool        $delete
-     * @param bool|string $versioning
-     * @param bool|string $encrypt
      *
      * @throws PathNotFoundException
      */
-    public function __construct($path, $exclude = [], $ignore = true, $delete = true, $versioning = false, $encrypt = false)
+    public function __construct($path)
     {
-        parent::__construct($exclude, $ignore, $delete, $versioning, $encrypt);
         $this->path = $path;
 
         if (!file_exists($this->path)) {

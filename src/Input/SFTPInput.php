@@ -16,13 +16,11 @@ class SFTPInput extends FlySystemInput
      * @param string $privateKey
      * @param int    $timeout
      * @param int    $port
-     * @param array  $exclude
-     * @param bool   $ignore
      */
-    public function __construct($path, $host, $username, $password = null, $privateKey = null, $timeout = 10, $port = 22, $exclude = [], $ignore = true)
+    public function __construct(
+        $path, $host, $username, $password = null, $privateKey = null, $timeout = 10, $port = 22
+    )
     {
-        parent::__construct($exclude, $ignore);
-
         $adapter = new SftpAdapter([
             'host' => $host,
             'port' => $port,

@@ -16,15 +16,10 @@ class FTPInput extends FlySystemInput {
 	 * @param bool $passive
 	 * @param bool $ssl
 	 * @param int $timeout
-	 * @param array $exclude
-	 * @param bool $ignore
 	 */
 	public function __construct(
-		$host, $username, $password, $root = '/', $port = 21, $passive = true, $ssl = true,
-		$timeout = 30, $exclude = [ ], $ignore = true
+		$host, $username, $password, $root = '/', $port = 21, $passive = true, $ssl = true, $timeout = 30
 	) {
-		parent::__construct( $exclude, $ignore );
-
 		$this->setFilesystem( new Ftp( [
 			'host'     => $host,
 			'username' => $username,
