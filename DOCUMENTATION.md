@@ -9,11 +9,14 @@
 ### Supported platforms to backup from
 
 * Local filesystem
+* FTP
 * SFTP
 
 ### Supported platforms to backup to
 
 * Local filesystem
+* FTP
+* SFTP
 
 ## Installation
 
