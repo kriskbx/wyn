@@ -6,6 +6,11 @@
 * ext-openssl
 * ext-mcrypt
 
+**optional:**
+
+* GIT installed and working if you want to version your backups with GIT - [Download](https://git-scm.com/downloads)
+*
+
 ### Supported platforms to backup from
 
 * Local filesystem
@@ -76,7 +81,7 @@ You can specify cron expressions for every input in your config file. Run `cront
 * * * * * wyn backup:cron
 ```
 
-wyn will run all inputs with configured cron expressions now on a regular basis. You can even log the output to a file of your choice (I recommend using the more verbose output there):
+wyn will backup all inputs with configured cron expressions now on a regular basis. You can even log the output to a file of your choice (I recommend using the more verbose output here):
 
 ```
 * * * * * wyn backup:cron --verbose >> /path/to/your/logfile 2>&1
@@ -101,9 +106,10 @@ input:
     path: /home/username/sync-input
     ignore: true
     exclude:
-     - .git/**/*
-     - **/.gitignore
-     to: uniqueNameForThisOutput
+      - .git/**/*
+      - **/.gitignore
+    to: uniqueNameForThisOutput
+    cron: '* 0 * * *'
 output:
   uniqueNameForThisOutput:
     provider: local
@@ -111,11 +117,10 @@ output:
     ignore: true
     delete: true
     exclude:
-     - .git/**/*
-     - vendor/**/*
+      - .git/**/*
+      - vendor/**/*
     versioning: false
     encrypt: false
-
 ```
 
 ## Options
@@ -125,8 +130,8 @@ output:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | `timeout` | Timeout in seconds. If you killed a running job by hand this is the time till you can start the same job again | Integer | 600 | N |
-| `timezone` | PHP-Timezone Identifier | String | 'Europe/Berlin' | N |
-| `cronConfig` | Path to the directory where the cron-system stores it temporary data | String | '~/.wyn/' | N |
+| `timezone` | PHP-Timezone Identifier | String | Europe/Berlin | N |
+| `cronConfig` | Path to the directory where the cron-system stores it temporary data | String | ~/.wyn/ | N |
 
 ### Input
 
@@ -192,7 +197,7 @@ Add this to your `composer.json` and run `composer install` afterwards:
 
 ```
 "require": {
-   "kriskbx/wyn": "0.1.*"
+   "kriskbx/wyn": "0.3.*"
 }
 
 ```
@@ -309,6 +314,10 @@ I've created a gulp task to automate the testing process. Just install the node 
 ### What about restoring?
 
 This is even more frustrating than backing things up. The answer is **no**. I won't to do that in the near future. You can rollback things by hand if you need to.
+
+### Why PHP and not [INSERT RANDOM LANGUAGE HERE]?
+
+Coz I like PHP.
 
 ## License
 

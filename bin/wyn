@@ -14,8 +14,10 @@ $autoloadLocal  = __DIR__ . '/../vendor/autoload.php';
 
 if ( file_exists( $autoloadGlobal ) ) {
 	require $autoloadGlobal;
+	$GLOBALS['autoloadPath'] = $autoloadGlobal;
 } elseif ( file_exists( $autoloadLocal ) ) {
 	require $autoloadLocal;
+	$GLOBALS['autoloadPath'] = $autoloadLocal;
 } else {
 	throw new Exception( "Can't find composer autoload.php" );
 }
