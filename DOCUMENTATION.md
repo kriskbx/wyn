@@ -93,6 +93,8 @@ composer global update
 ## Example config
 
 ```
+options:
+  timeout: 600
 input:
   uniqueNameForThisInput:
     provider: local
@@ -116,7 +118,15 @@ output:
 
 ```
 
-## General Options
+## Options
+
+### General
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|----------|
+| `timeout` | Timeout in seconds. If you killed a running job by hand this is the time till you can start the same job again. | Integer | - | N |
+| `timezone` | PHP-Timezone Identifier | String | 'Europe/Berlin' | N |
+| `cronConfig` | Path to the directory where the cron-system stores it temporary data | String | '~/.wyn/' | N |
 
 ### Input
 
