@@ -16,13 +16,13 @@
 * Amazon S3 V2/V3
 * Azure
 * Copy.com
-* FTP **since 0.2**
-* SFTP **since 0.1**
+* ~~FTP~~ **since 0.2**
+* ~~SFTP~~ **since 0.1**
 * GridFS
 * Rackspace
 * WebDAV
 * PHPCR
-* Local Filesystem **since 0.1**
+* ~~Local Filesystem~~ **since 0.1**
 * Openshift
 
 ## Planned platforms to backup to
@@ -31,23 +31,23 @@
 * Amazon S3 V2/V3
 * Azure
 * Copy.com
-* FTP **since 0.2**
-* SFTP **since 0.2**
+* ~~FTP~~ **since 0.2**
+* ~~SFTP~~ **since 0.2**
 * GridFS
 * Rackspace
 * WebDAV
 * PHPCR
-* Local Filesystem **since 0.1**
+* ~~Local Filesystem~~ **since 0.1**
 
 ## Upcoming features
 
-* Encrypt backup **since 0.1**
+* ~~Encrypt backup~~ **since 0.1**
 * Archive backup
 * Archive Versioning aka tar balls
 * SVN Versioning
-* Define one or multiple outputs for each input in config **since 0.3**
+* ~~Define one or multiple outputs for each input in config~~ **since 0.3**
 * Define multiple outputs for single command
-* Add `all` command to backup all inputs with preconfigured outputs **since 0.3**
-* Add `cron` command and add configuration options to backup inputs only at specified times/days/weeks **since 0.3**
+* ~~Add `all` command to backup all inputs with preconfigured outputs~~ **since 0.3**
+* ~~Add `cron` command and add configuration options to backup inputs only at specified times/days/weeks~~ **since 0.3**
 * At least 50% coverage
 * Make a build script to create a backuppipes.phar for a composer-less but easy installation
