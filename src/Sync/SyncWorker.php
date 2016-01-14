@@ -12,293 +12,347 @@ use kriskbx\wyn\Exceptions\ExceptionHelper;
 /**
  * Class SyncWorker.
  */
-class SyncWorker implements SyncWorkerContract
-{
-    use SkipErrors, ExceptionHelper;
+class SyncWorker implements SyncWorkerContract {
+	use SkipErrors, ExceptionHelper;
 
-    /**
-     * Input.
-     *
-     * @var InputContract
-     */
-    protected $input;
+	/**
+	 * Alive latest timestamp.
+	 *
+	 * @var int
+	 */
+	protected $aliveTimestamp = 0;
 
-    /**
-     * Output.
-     *
-     * @var OutputContract
-     */
-    protected $output;
+	/**
+	 * Alive update interval.
+	 *
+	 * @var int
+	 */
+	protected $aliveInterval = 10;
 
-    /**
-     * Settings.
-     *
-     * @var SyncSettingsContract
-     */
-    protected $settings;
+	/**
+	 * Alive file.
+	 *
+	 * @var string
+	 */
+	protected $aliveFile = '.wyn-alive';
 
-    /**
-     * SyncWorker Construct.
-     *
-     * @param InputContract        $input
-     * @param OutputContract       $output
-     * @param SyncSettingsContract $settings
-     */
-    public function __construct(InputContract &$input, OutputContract &$output, SyncSettingsContract &$settings)
-    {
-        $this->input = $input;
-        $this->output = $output;
-        $this->settings = $settings;
-    }
+	/**
+	 * Input.
+	 *
+	 * @var InputContract
+	 */
+	protected $input;
 
-    /**
-     * Copy a new file.
-     *
-     * @param $path
-     * @param $type
-     *
-     * @return string
-     */
-    public function newFile($path, $type)
-    {
-        if ($type == 'dir') {
-            $out = $this->createDirectory($path);
-        } else {
-            if ($this->supportsStreams()) {
-                $stream = $this->readStream($path);
-                if ($this->isException($stream)) {
-                    return $stream;
-                }
-                $out = $this->writeStream($path, $stream);
-            } else {
-                $file = $this->read($path);
-                if ($this->isException($file)) {
-                    return $file;
-                }
-                $out = $this->write($path, $file);
-            }
-        }
+	/**
+	 * Output.
+	 *
+	 * @var OutputContract
+	 */
+	protected $output;
 
-        return $out;
-    }
+	/**
+	 * Settings.
+	 *
+	 * @var SyncSettingsContract
+	 */
+	protected $settings;
 
-    /**
-     * Update an existing file.
-     *
-     * @param $path
-     * @param $type
-     *
-     * @return string
-     */
-    public function updateFile($path, $type)
-    {
-        $out = false;
+	/**
+	 * SyncWorker Construct.
+	 *
+	 * @param InputContract $input
+	 * @param OutputContract $output
+	 * @param SyncSettingsContract $settings
+	 */
+	public function __construct( InputContract &$input, OutputContract &$output, SyncSettingsContract &$settings ) {
+		$this->input    = $input;
+		$this->output   = $output;
+		$this->settings = $settings;
+	}
 
-        if ($type != 'dir') {
-            if ($this->supportsStreams()) {
-                $stream = $this->readStream($path);
-                if ($this->isException($stream)) {
-                    return $stream;
-                }
-                $out = $this->updateStream($path, $stream);
-            } else {
-                $file = $this->read($path);
-                if ($this->isException($file)) {
-                    return $file;
-                }
-                $out = $this->update($path, $file);
-            }
-        }
+	/**
+	 * Copy a new file.
+	 *
+	 * @param $path
+	 * @param $type
+	 *
+	 * @return string
+	 */
+	public function newFile( $path, $type ) {
+		$this->alive();
 
-        return $out;
-    }
+		if ( $type == 'dir' ) {
+			$out = $this->createDirectory( $path );
+		} else {
+			if ( $this->supportsStreams() ) {
+				$stream = $this->readStream( $path );
+				if ( $this->isException( $stream ) ) {
+					return $stream;
+				}
+				$out = $this->writeStream( $path, $stream );
+			} else {
+				$file = $this->read( $path );
+				if ( $this->isException( $file ) ) {
+					return $file;
+				}
+				$out = $this->write( $path, $file );
+			}
+		}
 
-    /**
-     * Delete a file.
-     *
-     * @param string $path
-     * @param string $type
-     *
-     * @return string
-     */
-    public function deleteFile($path, $type)
-    {
-        if ($type == 'dir') {
-            $out = $this->catchErrors($this->settings->skipOutputErrors(), function () use ($path) {
-                $this->output->deleteDir($path);
-            });
-        } else {
-            $out = $this->catchErrors($this->settings->skipOutputErrors(), function () use ($path) {
-                $this->output->delete($path);
-            });
-        }
+		return $out;
+	}
 
-        return $out;
-    }
+	/**
+	 * Update an existing file.
+	 *
+	 * @param $path
+	 * @param $type
+	 *
+	 * @return string
+	 */
+	public function updateFile( $path, $type ) {
+		$this->alive();
 
-    /**
-     * Does this setup support php streaming?
-     *
-     * @return bool
-     */
-    protected function supportsStreams()
-    {
-        return $this->input->supportsStreams() && $this->output->supportsStreams();
-    }
+		$out = false;
 
-    /**
-     * Set settings property.
-     *
-     * @param SyncSettingsContract $settings
-     *
-     * @return $this
-     */
-    public function settings(SyncSettingsContract $settings)
-    {
-        $this->settings = $settings;
+		if ( $type != 'dir' ) {
+			if ( $this->supportsStreams() ) {
+				$stream = $this->readStream( $path );
+				if ( $this->isException( $stream ) ) {
+					return $stream;
+				}
+				$out = $this->updateStream( $path, $stream );
+			} else {
+				$file = $this->read( $path );
+				if ( $this->isException( $file ) ) {
+					return $file;
+				}
+				$out = $this->update( $path, $file );
+			}
+		}
 
-        return $this;
-    }
+		return $out;
+	}
 
-    /**
-     * Create Directory by the given path.
-     *
-     * @param string $path
-     *
-     * @return \Exception|string
-     */
-    protected function createDirectory($path)
-    {
-        return $this->catchErrors($this->settings->skipOutputErrors(), function () use ($path) {
-            return $this->output->createDir($path);
-        });
-    }
+	/**
+	 * Delete a file.
+	 *
+	 * @param string $path
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public function deleteFile( $path, $type ) {
+		$this->alive();
 
-    /**
-     * Read Stream by the given path.
-     *
-     * @param string $path
-     *
-     * @return \Exception|resource
-     */
-    protected function readStream($path)
-    {
-        return $this->catchErrors($this->settings->skipInputErrors(), function () use ($path) {
-            return $this->input->readStream($path);
-        });
-    }
+		if ( $type == 'dir' ) {
+			$out = $this->catchErrors( $this->settings->ignoreOutput(), function () use ( $path ) {
+				$this->output->deleteDir( $path );
+			} );
+		} else {
+			$out = $this->catchErrors( $this->settings->ignoreOutput(), function () use ( $path ) {
+				$this->output->delete( $path );
+			} );
+		}
 
-    /**
-     * Write the given Stream to the given path.
-     *
-     * @param string   $path
-     * @param resource $stream
-     *
-     * @return \Exception|string
-     */
-    protected function writeStream($path, $stream)
-    {
-        return $this->catchErrors($this->settings->skipOutputErrors(), function () use ($path, $stream) {
-            return $this->output->writeStream($path, $stream);
-        });
-    }
+		return $out;
+	}
 
-    /**
-     * Read file.
-     *
-     * @param string $path
-     *
-     * @return \Exception|string
-     */
-    protected function read($path)
-    {
-        return $this->catchErrors($this->settings->skipInputErrors(), function () use ($path) {
-            return $this->input->read($path);
-        });
-    }
+	/**
+	 * Does this setup support php streaming?
+	 *
+	 * @return bool
+	 */
+	protected function supportsStreams() {
+		return $this->input->supportsStreams() && $this->output->supportsStreams();
+	}
 
-    /**
-     * Write file.
-     *
-     * @param string $path
-     * @param string $file
-     *
-     * @return \Exception|string
-     */
-    protected function write($path, $file)
-    {
-        return $this->catchErrors($this->settings->skipOutputErrors(), function () use ($path, $file) {
-            return $this->output->write($path, $file);
-        });
-    }
+	/**
+	 * Set settings property.
+	 *
+	 * @param SyncSettingsContract $settings
+	 *
+	 * @return $this
+	 */
+	public function settings( SyncSettingsContract $settings ) {
+		$this->settings = $settings;
 
-    /**
-     * Update Stream.
-     *
-     * @param string   $path
-     * @param resource $stream
-     *
-     * @return \Exception|string
-     */
-    protected function updateStream($path, $stream)
-    {
-        return $this->catchErrors($this->settings->skipOutputErrors(), function () use ($path, $stream) {
-            return $this->output->updateStream($path, $stream);
-        });
-    }
+		return $this;
+	}
 
-    /**
-     * Update.
-     *
-     * @param string $path
-     * @param string $file
-     *
-     * @return \Exception|string
-     */
-    protected function update($path, $file)
-    {
-        return $this->catchErrors($this->settings->skipOutputErrors(), function () use ($path, $file) {
-            return $this->output->update($path, $file);
-        });
-    }
+	/**
+	 * Create Directory by the given path.
+	 *
+	 * @param string $path
+	 *
+	 * @return \Exception|string
+	 */
+	protected function createDirectory( $path ) {
+		return $this->catchErrors( $this->settings->ignoreOutput(), function () use ( $path ) {
+			return $this->output->createDir( $path );
+		} );
+	}
 
-    /**
-     * Set input.
-     *
-     * @param InputContract $input
-     */
-    public function setInput(InputContract $input)
-    {
-        $this->input = $input;
-    }
+	/**
+	 * Read Stream by the given path.
+	 *
+	 * @param string $path
+	 *
+	 * @return \Exception|resource
+	 */
+	protected function readStream( $path ) {
+		return $this->catchErrors( $this->settings->ignoreInput(), function () use ( $path ) {
+			return $this->input->readStream( $path );
+		} );
+	}
 
-    /**
-     * Get input.
-     *
-     * @return InputContract
-     */
-    public function getInput()
-    {
-        return $this->input;
-    }
+	/**
+	 * Write the given Stream to the given path.
+	 *
+	 * @param string $path
+	 * @param resource $stream
+	 *
+	 * @return \Exception|string
+	 */
+	protected function writeStream( $path, $stream ) {
+		return $this->catchErrors( $this->settings->ignoreOutput(), function () use ( $path, $stream ) {
+			return $this->output->writeStream( $path, $stream );
+		} );
+	}
 
-    /**
-     * Get output.
-     *
-     * @return OutputContract
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
+	/**
+	 * Read file.
+	 *
+	 * @param string $path
+	 *
+	 * @return \Exception|string
+	 */
+	protected function read( $path ) {
+		return $this->catchErrors( $this->settings->ignoreInput(), function () use ( $path ) {
+			return $this->input->read( $path );
+		} );
+	}
 
-    /**
-     * Set output.
-     *
-     * @param OutputContract $output
-     */
-    public function setOutput(OutputContract $output)
-    {
-        $this->output = $output;
-    }
+	/**
+	 * Write file.
+	 *
+	 * @param string $path
+	 * @param string $file
+	 *
+	 * @return \Exception|string
+	 */
+	protected function write( $path, $file ) {
+		return $this->catchErrors( $this->settings->ignoreOutput(), function () use ( $path, $file ) {
+			return $this->output->write( $path, $file );
+		} );
+	}
+
+	/**
+	 * Update Stream.
+	 *
+	 * @param string $path
+	 * @param resource $stream
+	 *
+	 * @return \Exception|string
+	 */
+	protected function updateStream( $path, $stream ) {
+		return $this->catchErrors( $this->settings->ignoreOutput(), function () use ( $path, $stream ) {
+			return $this->output->updateStream( $path, $stream );
+		} );
+	}
+
+	/**
+	 * Update.
+	 *
+	 * @param string $path
+	 * @param string $file
+	 *
+	 * @return \Exception|string
+	 */
+	protected function update( $path, $file ) {
+		return $this->catchErrors( $this->settings->ignoreOutput(), function () use ( $path, $file ) {
+			return $this->output->update( $path, $file );
+		} );
+	}
+
+	/**
+	 * This process is alive.
+	 *
+	 * @return array|false
+	 */
+	public function alive() {
+		if ( $this->aliveTimestamp >= time() - $this->aliveInterval ) {
+			return;
+		}
+
+		$this->aliveTimestamp = time();
+
+		if ( $this->output->has( $this->aliveFile ) ) {
+			return $this->output->update( $this->aliveFile, time() );
+		}
+
+		return $this->output->write( $this->aliveFile, time() );
+	}
+
+	/**
+	 * Set input.
+	 *
+	 * @param InputContract $input
+	 */
+	public function setInput( InputContract $input ) {
+		$this->input = $input;
+	}
+
+	/**
+	 * Get input.
+	 *
+	 * @return InputContract
+	 */
+	public function getInput() {
+		return $this->input;
+	}
+
+	/**
+	 * Get output.
+	 *
+	 * @return OutputContract
+	 */
+	public function getOutput() {
+		return $this->output;
+	}
+
+	/**
+	 * Set output.
+	 *
+	 * @param OutputContract $output
+	 */
+	public function setOutput( OutputContract $output ) {
+		$this->output = $output;
+	}
+
+	/**
+	 * Delete the alive file.
+	 */
+	public function kill() {
+		if(!$this->output->has($this->aliveFile))
+			return;
+
+		$this->output->delete( $this->aliveFile );
+	}
+
+	/**
+	 * Is another process alive and working on this folder?
+	 *
+	 * @return bool
+	 */
+	public function isOtherProcessAlive() {
+		if(!$this->output->has($this->aliveFile))
+			return false;
+
+		if($this->output->read($this->aliveFile) < time() - $this->settings->timeout()) {
+			return false;
+		}
+
+		return true;
+	}
 }

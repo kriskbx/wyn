@@ -54,6 +54,8 @@ trait SyncGenerator
                 call_user_func_array([$settings, 'set'.ucfirst($key)], [$outputOptions[ $key ]]);
             } elseif (isset($outputOptions[ str_replace('Output', '', $key) ]) && in_array(str_replace('Output', '', $key), SyncSettings::getOutputBaseOptions())) {
                 call_user_func_array([$settings, 'set'.ucfirst($key)], [$outputOptions[ str_replace('Output', '', $key) ]]);
+            } elseif ($config->hasOption($key) && in_array($key, SyncSettings::getGeneralBaseOptions())) {
+                call_user_func_array([$settings, 'set'.ucfirst($key)], [$config->getOption($key)]);
             }
         }
 
@@ -105,7 +107,7 @@ trait SyncGenerator
             mkdir($e->getPath(), 0777, true);
             $output->writeln('');
 
-            return $this->createOutput($input->getArgument('output'), $config);
+            return $this->createOutput($name, $config);
         }
     }
 

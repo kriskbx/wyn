@@ -46,7 +46,6 @@ class Application
     public function __construct(SyncContract $sync = null)
     {
         $this->sync = $sync;
-        date_default_timezone_set('UTC');
     }
 
     /**
@@ -126,6 +125,8 @@ class Application
         if (!isset($this->sync)) {
             throw new PropertyNotSetException('sync');
         }
+
+	    date_default_timezone_set($this->sync->getSettings()->timezone());
 
         $this->sortMiddleware();
 

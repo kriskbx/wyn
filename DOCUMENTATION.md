@@ -45,13 +45,25 @@ wyn edit
 Backup from a single input to a single output as specified in the global configuration:
 
 ```
-wyn sync input output
+wyn backup:single input output
 ```
 
 Or use a specific config file:
 
 ```
-wyn sync input output /path/to/config/file.yml
+wyn backup:single input output /path/to/config/file.yml
+```
+
+If you configured one or multiple outputs for the given input in your config file you can also run this:
+
+```
+wyn backup:single input
+```
+
+Or you can backup all inputs that got configured outputs:
+
+```
+wyn backup:all
 ```
 
 ## Update
@@ -73,6 +85,7 @@ input:
     exclude:
      - .git/**/*
      - **/.gitignore
+     to: uniqueNameForThisOutput
 output:
   uniqueNameForThisOutput:
     provider: local
@@ -96,6 +109,7 @@ output:
 | `provider` | Specifies the provider | String | - | Y |
 | `ignore` | Skip errors when reading the input, otherwise stop the whole process | Boolean | true | N |
 | `exclude` | Exclude files and folders that match the given globs | Array | - | N |
+| `to` | Specify one or multiple outputs for this input | Array/String | - | N |
 
 ### Output
 

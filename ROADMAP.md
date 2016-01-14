@@ -1,4 +1,4 @@
-# BackupPipes Roadmap
+# wyn roadmap
 
 ## Planned platforms to backup from
 
@@ -38,17 +38,16 @@
 * WebDAV
 * PHPCR
 * Local Filesystem **since 0.1**
-* Local ZipArchive
 
 ## Upcoming features
 
 * Encrypt backup **since 0.1**
 * Archive backup
-* Archive Versioning
+* Archive Versioning aka tar balls
 * SVN Versioning
-* Define one or multiple outputs for each input in config
+* Define one or multiple outputs for each input in config **since 0.3**
 * Define multiple outputs for single command
-* Add `all` command to backup all inputs with preconfigured outputs
+* Add `all` command to backup all inputs with preconfigured outputs **since 0.3**
 * Add `cron` command and add configuration options to backup inputs only at specified times/days/weeks
 * At least 50% coverage
 * Make a build script to create a backuppipes.phar for a composer-less but easy installation

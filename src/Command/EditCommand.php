@@ -22,20 +22,20 @@ class EditCommand extends Command
     /**
      * Execute Command.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param InputInterface  $consoleInput
+     * @param OutputInterface $consoleOutput
      *
      * @return int|null|void
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $consoleInput, OutputInterface $consoleOutput)
     {
-        GlobalConfig::preFlight($output);
+        GlobalConfig::preFlight($consoleOutput);
 
         $command = $this->executable().' '.GlobalConfig::getConfigFile();
         $process = new Process($command, realpath(__DIR__.'/../'), array_merge($_SERVER, $_ENV), null, null);
 
-        $process->run(function ($type, $line) use ($output) {
-            $output->write($line);
+        $process->run(function ($type, $line) use ($consoleOutput) {
+            $consoleOutput->write($line);
         });
     }
 

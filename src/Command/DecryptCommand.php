@@ -32,27 +32,27 @@ class DecryptCommand extends BackupCommand
     /**
      * Execute Command.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param InputInterface  $consoleInput
+     * @param OutputInterface $consoleOutput
      *
      * @return int|null|void
      *
      * @throws PathNotFoundException
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $consoleInput, OutputInterface $consoleOutput)
     {
-        parent::execute($input, $output);
+        parent::execute($consoleInput, $consoleOutput);
 
-        if (!file_exists($input->getArgument('target')) || !is_dir($input->getArgument('target'))) {
-            throw new PathNotFoundException($input->getArgument('target'));
+        if ( !file_exists($consoleInput->getArgument('target')) || !is_dir($consoleInput->getArgument('target'))) {
+            throw new PathNotFoundException($consoleInput->getArgument('target'));
         }
 
         // Get Config
-        $config = new YamlConfig(new Yaml(), $input->getArgument('config'));
+        $config = new YamlConfig(new Yaml(), $consoleInput->getArgument('config'));
 
         // Create IO Handler
-        $inputHandler = $this->createOutput($input->getArgument('output'), $config);
-        $outputHandler = new LocalOutput($input->getArgument('target'));
+        $inputHandler = $this->createOutput($consoleInput->getArgument('output'), $config);
+        $outputHandler = new LocalOutput($consoleInput->getArgument('target'));
 
         // Console output
         $console = $this->createConsoleOutput($this);
@@ -62,6 +62,6 @@ class DecryptCommand extends BackupCommand
         $crypto->decrypt($inputHandler, $outputHandler, $console);
 
         // Finished
-        $this->finished($output);
+        $this->finished($consoleOutput);
     }
 }

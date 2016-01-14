@@ -9,6 +9,7 @@ use kriskbx\wyn\Contracts\Sync\SyncManager as SyncManagerContract;
 use kriskbx\wyn\Contracts\Sync\SyncOutput as SyncOutputContract;
 use kriskbx\wyn\Contracts\Sync\SyncSettings as SyncSettingsContract;
 use kriskbx\wyn\Contracts\Sync\SyncWorker as SyncWorkerContract;
+use kriskbx\wyn\Exceptions\OtherProcessIsRunningException;
 use kriskbx\wyn\Sync\Output\SyncOutput;
 use ReflectionObject;
 use ReflectionParameter;
@@ -322,8 +323,13 @@ class Sync implements SyncContract
      */
     public function sync()
     {
-        while ($this->run()) {
+        if($this->worker->isOtherProcessAlive()) {
+            throw new OtherProcessIsRunningException;
         }
+
+        while ($this->run()) {}
+
+        $this->worker->kill();
     }
 
     /**

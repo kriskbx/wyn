@@ -21,13 +21,13 @@ class InitCommand extends Command
     /**
      * Execute Command.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param InputInterface  $consoleInput
+     * @param OutputInterface $consoleOutput
      *
      * @return int|null|void
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $consoleInput, OutputInterface $consoleOutput)
     {
-        GlobalConfig::preFlight($output);
+        GlobalConfig::preFlight($consoleOutput);
     }
 }

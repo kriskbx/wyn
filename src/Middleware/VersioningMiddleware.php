@@ -101,7 +101,7 @@ class VersioningMiddleware extends Middleware
                 '**/.gitignore',
                 '**/.gitkeep',
             ],
-            $settings->skipInputErrors(),
+            $settings->ignoreInput(),
             true,
             true
         );
@@ -121,7 +121,7 @@ class VersioningMiddleware extends Middleware
 
         // Modify existing sync object to take the local git repository as input
         $sync->setInput($this->git->getInputHandler());
-        $sync->setSettings(new SyncSettings([], $settings->excludeOutput(), true, $settings->skipOutputErrors(), true));
+        $sync->setSettings(new SyncSettings([], $settings->excludeOutput(), true, $settings->ignoreOutput(), true));
     }
 
     /**
