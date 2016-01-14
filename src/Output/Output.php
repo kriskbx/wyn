@@ -20,7 +20,7 @@ abstract class Output implements OutputContract
      */
     public function supportsStreams()
     {
-        return ($this instanceof CanWriteStream);
+        return $this instanceof CanWriteStream;
     }
 
     /**

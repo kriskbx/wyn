@@ -43,7 +43,7 @@ class DecryptCommand extends BackupCommand
     {
         parent::execute($consoleInput, $consoleOutput);
 
-        if ( !file_exists($consoleInput->getArgument('target')) || !is_dir($consoleInput->getArgument('target'))) {
+        if (!file_exists($consoleInput->getArgument('target')) || !is_dir($consoleInput->getArgument('target'))) {
             throw new PathNotFoundException($consoleInput->getArgument('target'));
         }
 

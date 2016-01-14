@@ -36,6 +36,8 @@ Coming soon.
 
 ## Usage
 
+### General
+
 Create a global configuration file and open it in your default editor by running this command:
 
 ```
@@ -64,6 +66,20 @@ Or you can backup all inputs that got configured outputs:
 
 ```
 wyn backup:all
+```
+
+### Cron
+
+You can specify cron expressions for every input in your config file. Run `crontab -e` and add this command to your crontab file then:
+
+```
+* * * * * wyn backup:cron
+```
+
+wyn will run all inputs with configured cron expressions now on a regular basis. You can even log the output to a file of your choice (I recommend using the more verbose output there):
+
+```
+* * * * * wyn backup:cron --verbose >> /path/to/your/logfile 2>&1
 ```
 
 ## Update
@@ -110,6 +126,7 @@ output:
 | `ignore` | Skip errors when reading the input, otherwise stop the whole process | Boolean | true | N |
 | `exclude` | Exclude files and folders that match the given globs | Array | - | N |
 | `to` | Specify one or multiple outputs for this input | Array/String | - | N |
+| `cron` | Cron expression, make sure to escape it using quotes | String | - | N |
 
 ### Output
 

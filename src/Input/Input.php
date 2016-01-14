@@ -20,7 +20,7 @@ abstract class Input implements InputContract
      */
     public function supportsStreams()
     {
-        return ($this instanceof CanReadStream);
+        return $this instanceof CanReadStream;
     }
 
     /**

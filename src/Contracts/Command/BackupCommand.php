@@ -24,14 +24,15 @@ interface BackupCommand
     public function getInput();
 
     /**
-     * @param InputInterface $consoleInput
+     * @param InputInterface  $consoleInput
      * @param OutputInterface $consoleOutput
      * @param $config
      * @param $inputName
      * @param $console
      *
      * @return int|void
+     *
      * @throws \Exception
      */
-    public function backup( $inputName, InputInterface $consoleInput, OutputInterface $consoleOutput, ConfigContract $config, SyncOutputContract $console );
+    public function backup($inputName, InputInterface $consoleInput, OutputInterface $consoleOutput, ConfigContract $config, SyncOutputContract $console);
 }

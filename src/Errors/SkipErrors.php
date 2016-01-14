@@ -17,7 +17,7 @@ trait SkipErrors
      */
     protected function canSkipErrors($object)
     {
-        return ($object instanceof CanSkipErrors);
+        return $object instanceof CanSkipErrors;
     }
 
     /**

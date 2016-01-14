@@ -19,6 +19,6 @@ trait ExceptionHelper
             return false;
         }
 
-        return ($input instanceof Exception);
+        return $input instanceof Exception;
     }
 }

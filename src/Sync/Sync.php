@@ -323,11 +323,12 @@ class Sync implements SyncContract
      */
     public function sync()
     {
-        if($this->worker->isOtherProcessAlive()) {
-            throw new OtherProcessIsRunningException;
+        if ($this->worker->isOtherProcessAlive()) {
+            throw new OtherProcessIsRunningException();
         }
 
-        while ($this->run()) {}
+        while ($this->run()) {
+        }
 
         $this->worker->kill();
     }
