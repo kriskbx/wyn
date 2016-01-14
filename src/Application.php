@@ -126,8 +126,6 @@ class Application
             throw new PropertyNotSetException('sync');
         }
 
-	    date_default_timezone_set($this->sync->getSettings()->timezone());
-
         $this->sortMiddleware();
 
         foreach ($this->middleware as $index => $middleware) {

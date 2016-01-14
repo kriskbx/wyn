@@ -4,6 +4,7 @@ namespace kriskbx\wyn\Command;
 
 use kriskbx\wyn\Application;
 use kriskbx\wyn\Contracts\Command\BackupCommand as BackupCommandContract;
+use kriskbx\wyn\Contracts\Sync\SyncSettings as SyncSettingsContract;
 use kriskbx\wyn\Helper\SyncGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,6 +56,13 @@ abstract class BackupCommand extends Command implements BackupCommandContract {
 	}
 
 	/**
+	 * @param SyncSettingsContract $settings
+	 */
+	protected function setTimezone( SyncSettingsContract $settings ) {
+		date_default_timezone_set( $settings->timezone() );
+	}
+
+	/**
 	 * Set default options: skipErrors, exclude, delete.
 	 */
 	protected function setDefaultOptions() {
@@ -101,7 +109,7 @@ abstract class BackupCommand extends Command implements BackupCommandContract {
 	 * @return int|void
 	 * @throws \Exception
 	 */
-	protected function backup( $inputName, InputInterface $consoleInput, OutputInterface $consoleOutput, ConfigContract $config, SyncOutputContract $console ) {
+	public function backup( $inputName, InputInterface $consoleInput, OutputInterface $consoleOutput, ConfigContract $config, SyncOutputContract $console ) {
 		// Loop through outputs
 		foreach ( $this->getOutputNames( $consoleInput, $config, $inputName ) as $outputName ) {
 
@@ -110,6 +118,7 @@ abstract class BackupCommand extends Command implements BackupCommandContract {
 
 			// Create Sync Settings
 			$settings = $this->createSettings( $inputName, $outputName, $consoleInput, $config );
+			$this->setTimezone( $settings );
 
 			// Create IO Handler
 			$inputHandler  = $this->createInput( $inputName, $config );

@@ -2,6 +2,7 @@
 
 namespace kriskbx\wyn\Sync;
 
+use kriskbx\wyn\Config\GlobalConfig;
 use kriskbx\wyn\Contracts\Sync\SyncSettings as SyncSettingsContract;
 use ReflectionClass;
 
@@ -97,6 +98,13 @@ class SyncSettings implements SyncSettingsContract {
 	public $timezone;
 
 	/**
+	 * @belongsTo options
+	 *
+	 * @var string
+	 */
+	public $cronConfig;
+
+	/**
 	 * SyncSettings constructor.
 	 *
 	 * @param array $excludeInput
@@ -110,11 +118,12 @@ class SyncSettings implements SyncSettingsContract {
 	 * @param string $cron
 	 * @param int $timeout
 	 * @param string $timezone
+	 * @param null $cronConfig
 	 */
 	public function __construct(
 		$excludeInput = [ ], $excludeOutput = [ ], $skipInputErrors = true, $skipOutputErrors = true,
 		$delete = true, $versioning = false, $encrypt = false, $to = null, $cron = null, $timeout = 600,
-		$timezone = 'Europe/Berlin'
+		$timezone = 'Europe/Berlin', $cronConfig = null
 	) {
 		$this->excludeInput  = $excludeInput;
 		$this->excludeOutput = $excludeOutput;
@@ -127,6 +136,7 @@ class SyncSettings implements SyncSettingsContract {
 		$this->cron          = $cron;
 		$this->timeout       = $timeout;
 		$this->timezone      = $timezone;
+		$this->cronConfig    = ( $cronConfig ? $cronConfig : GlobalConfig::getConfigDir() );
 	}
 
 	/**
@@ -181,6 +191,6 @@ class SyncSettings implements SyncSettingsContract {
 	 * @return array
 	 */
 	public static function getGeneralBaseOptions() {
-		return [ 'timeout', 'timezone' ];
+		return [ 'timeout', 'timezone', 'cronConfig' ];
 	}
 }
