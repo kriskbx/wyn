@@ -87,7 +87,7 @@ class Sync implements SyncContract
 
         $this->addFilesToUpdateToQueue(
             $this->manager->getFiles(
-                $this->manager->getFilesToUpdate()
+                $this->manager->getFilesToUpdate($this->settings->checkFileSize())
             )
         );
 

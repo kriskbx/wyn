@@ -129,7 +129,7 @@ output:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
-| `timeout` | Timeout in seconds. If you killed a running job by hand this is the time till you can start the same job again | Integer | 600 | N |
+| `timeout` | Timeout in seconds. If you killed a running job by hand or a job timed out this is the time till you can start the same job again | Integer | 600 | N |
 | `timezone` | PHP-Timezone Identifier | String | Europe/Berlin | N |
 | `cronConfig` | Path to the directory where the cron-system stores it temporary data | String | ~/.wyn/ | N |
 
@@ -142,6 +142,7 @@ output:
 | `exclude` | Exclude files and folders that match the given globs | Array | - | N |
 | `to` | Specify one or multiple outputs for this input | Array/String | - | N |
 | `cron` | Cron expression, make sure to escape it using quotes | String | - | N |
+| `checkFileSize` | Compare file size of input and output files | Boolean | true | N |
 
 ### Output
 
@@ -186,6 +187,37 @@ output:
 | `ssl` | Use SSL? | Boolean | true | N |
 | `passive` | Use passive mode | Boolean | true | N |
 | `port` | SSH port | Integer | 21 | N |
+
+## Input Provider Options
+
+### MySQL
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|----------|
+| `host` | Host name | String | / | Y |
+| `user` | User name | String | / | Y |
+| `password` | Password | String | / | Y |
+| `database` | Name of the database or an Array of database names | String|Array | / | N |
+| `port` | Name of the database or an Array of database names | Integer | 3306 | N |
+| `socket` | Will be used if set | String | / | N |
+| `compress` | Compress the output. Can be either: None, Gzip, Bzip | String | None | N |
+| `noData` | Skip dumping the data and only dump table structure | Boolean | false | N |
+| `addDropTable` | Add drop table clauses | Boolean | false | N |
+| `singleTransaction` | Single transaction | Boolean | true | N |
+| `lockTables` | Lock tables | Boolean | false | N |
+| `addLocks` | Add locks | Boolean | true | N |
+| `extendedInsert` | Extended insert | Boolean | true | N |
+| `disableKeys` | Disable Keys | Boolean | true | N |
+| `noCreateInfo` | No create info | Boolean | false | N |
+| `skipTriggers` | Skip triggers | Boolean | false | N |
+| `addDropTrigger` | Skip triggers | Boolean | true | N |
+| `routines` | Routines | Boolean | false | N |
+| `hexBlob` | Hex Blob | Boolean | true | N |
+| `skipTzUtc` | Skip tc utc | Boolean | false | N |
+| `noAutoCommit` | No auto commit | Boolean | true | N |
+| `skipComments` | Skip comments | Boolean | false | N |
+| `skipDumpDate` | Skip dump date | Boolean | false | N |
+| `defaultCharacterSet` | Default charset | String | 'utf8' | N |
 
 ## Using wyn within a framework or existing application
 

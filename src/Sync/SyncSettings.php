@@ -106,6 +106,13 @@ class SyncSettings implements SyncSettingsContract
     public $cronConfig;
 
     /**
+     * @belongsTo input
+     *
+     * @var bool
+     */
+    public $checkFileSize;
+
+    /**
      * SyncSettings constructor.
      *
      * @param array        $excludeInput
@@ -120,11 +127,12 @@ class SyncSettings implements SyncSettingsContract
      * @param int          $timeout
      * @param string       $timezone
      * @param null         $cronConfig
+     * @param bool         $checkFileSize
      */
     public function __construct(
         $excludeInput = [], $excludeOutput = [], $skipInputErrors = true, $skipOutputErrors = true,
         $delete = true, $versioning = false, $encrypt = false, $to = null, $cron = null, $timeout = 600,
-        $timezone = 'Europe/Berlin', $cronConfig = null
+        $timezone = 'Europe/Berlin', $cronConfig = null, $checkFileSize = true
     ) {
         $this->excludeInput = $excludeInput;
         $this->excludeOutput = $excludeOutput;
@@ -137,14 +145,23 @@ class SyncSettings implements SyncSettingsContract
         $this->cron = $cron;
         $this->timeout = $timeout;
         $this->timezone = $timezone;
+        $this->checkFileSize = $checkFileSize;
         $this->cronConfig = ($cronConfig ? $cronConfig : GlobalConfig::getConfigDir());
     }
+
+    /* --------------------------------------
+     * --------------------------------------
+     * Stop editing here
+     * --------------------------------------
+     * -------------------------------------- */
 
     /**
      * Automagically set and get properties.
      *
      * @param $name
      * @param $arguments
+     *
+     * @return mixed
      */
     public function __call($name, $arguments)
     {
@@ -155,11 +172,35 @@ class SyncSettings implements SyncSettingsContract
             && $this->hasProperty($realName = lcfirst(substr($name, 3)))
         ) { // SET
             if (isset($arguments[0])) {
-                $this->$realName = $arguments[0];
+                return $this->$realName = $arguments[0];
             }
-        } else {
-            throw new \BadMethodCallException();
         }
+
+        throw new \BadMethodCallException();
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return array
+     */
+    protected static function getBaseOptions($type)
+    {
+        $options = [];
+
+        $reflection = new ReflectionClass(__CLASS__);
+        $properties = $reflection->getProperties();
+
+        foreach ($properties as $property) {
+            $docBlock = $property->getDocComment();
+            preg_match('/@belongsTo ([a-zA-Z].*)/i', $docBlock, $matches);
+
+            if ($matches && isset($matches[1]) && $matches[1] == $type) {
+                $options[] = $property->getName();
+            }
+        }
+
+        return $options;
     }
 
     /**
@@ -181,7 +222,7 @@ class SyncSettings implements SyncSettingsContract
      */
     public static function getOutputBaseOptions()
     {
-        return ['exclude', 'ignore', 'delete', 'versioning', 'encrypt'];
+        return self::getBaseOptions('output');
     }
 
     /**
@@ -189,7 +230,7 @@ class SyncSettings implements SyncSettingsContract
      */
     public static function getInputBaseOptions()
     {
-        return ['exclude', 'ignore', 'to', 'cron'];
+        return self::getBaseOptions('input');
     }
 
     /**
@@ -197,6 +238,6 @@ class SyncSettings implements SyncSettingsContract
      */
     public static function getGeneralBaseOptions()
     {
-        return ['timeout', 'timezone', 'cronConfig'];
+        return self::getBaseOptions('general');
     }
 }

@@ -128,10 +128,10 @@ class SyncManager implements SyncManagerContract
                 continue;
             }
 
-            // Compare filesizes
-            $fileSize = (!isset($file['size']) || ($checkSize && ($this->output->getSize($file['path']) === $file['size'])));
             // Compare timestamps
             $timeStamp = ($this->output->getTimestamp($file['path']) >= $file['timestamp']);
+            // Compare filesizes
+            $fileSize = (!isset($file['size']) || !$checkSize || ($this->output->getSize($file['path']) === $file['size']));
             // Compare hashes
             $hash = (!$checkHash && (true)); // TODO: integrate checking by hashing the file contents
 
