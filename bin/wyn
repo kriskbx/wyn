@@ -2,36 +2,13 @@
 
 <?php
 
-use kriskbx\wyn\Command\BackupAllCommand;
-use kriskbx\wyn\Command\BackupCronCommand;
-use kriskbx\wyn\Command\BackupSingleCommand;
-use kriskbx\wyn\Command\DecryptCommand;
-use kriskbx\wyn\Command\EditCommand;
-use Symfony\Component\Console\Application;
+$sourceGlobal = __DIR__ . '/../kriskbx/wyn/src/wyn.php';
+$sourceLocal  = __DIR__ . '/../src/wyn.php';
 
-$autoloadGlobal = __DIR__ . '/../../../autoload.php';
-$autoloadLocal  = __DIR__ . '/../vendor/autoload.php';
-
-if ( file_exists( $autoloadGlobal ) ) {
-	require $autoloadGlobal;
-	$GLOBALS['autoloadPath'] = $autoloadGlobal;
-} elseif ( file_exists( $autoloadLocal ) ) {
-	require $autoloadLocal;
-	$GLOBALS['autoloadPath'] = $autoloadLocal;
+if ( file_exists( $sourceGlobal ) ) {
+	include $sourceGlobal;
+} elseif ( file_exists( $sourceLocal ) ) {
+	include $sourceLocal;
 } else {
-	throw new Exception( "Can't find composer autoload.php" );
+	throw new Exception( "Can't find source!" );
 }
-
-if ( $argc == 1 ) {
-	echo "┬ ┬┬ ┬┌┐┌\n";
-	echo "│││└┬┘│││\n";
-	echo "└┴┘ ┴ ┘└┘\n\n";
-}
-
-$app = new Application( 'wyn', file_get_contents( __DIR__ . '/../VERSION' ) );
-$app->add( new BackupSingleCommand );
-$app->add( new BackupAllCommand );
-$app->add( new BackupCronCommand );
-$app->add( new EditCommand );
-$app->add( new DecryptCommand );
-$app->run();
