@@ -4,8 +4,8 @@
 
 * Mail via IMAP
 * Mail via POP3
-* MySQL via direct connection
-* MySQL via socket
+* ~~MySQL via direct connection~~ **since 0.4**
+* ~~MySQL via socket~~ **since 0.4**
 * MySQL via SSH (direct connection to 127.0.0.1 or socket)
 * MySQL via FTP and HTTP (uploads a simple php script that acts as an API to the database, get the data via multiple http requests. should work even on crappy shared-hosts.)
 * Calendar via CalDAV (Google, Owncloud, Baikal, etc.)
