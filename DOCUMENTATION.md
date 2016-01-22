@@ -3,13 +3,13 @@
 ## Requirements
 
 * PHP 5.6 or later
-* PDO
 * ext-openssl
 * ext-mcrypt
 
 **optional:**
 
 * GIT installed and working if you want to version your backups with GIT - [Download](https://git-scm.com/downloads)
+* PDO for MySQL backups
 
 ### Supported platforms to backup from
 
