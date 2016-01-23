@@ -47,6 +47,13 @@ $changed" >> CHANGELOG.md
 fi
 
 ###########
+# CREATE PHAR
+###########
+
+echo "Creating phar..."
+php -d phar.readonly=off resource/bin/phar-composer.phar build . ./build/wyn.phar
+
+###########
 # GIT TAG
 ###########
 git add -A .

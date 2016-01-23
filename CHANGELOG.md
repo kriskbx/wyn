@@ -19,3 +19,8 @@
 ## [0.4.0] - 2016-01-22
 ### Added
 - Added MySQL Input
+
+## [0.5.0] - 2016-01-23
+### Added
+- Added update and rollback commands
+- Added phar-packaging

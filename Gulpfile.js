@@ -11,7 +11,7 @@ gulp.task('test', function() {
         .on('error', notify.onError({
             title: "Crap",
             message: "The tests failed.",
-            icon: __dirname + '/fail.png'
+            icon: __dirname + '/resource/img/fail.png'
         }))
         .pipe(notify({
             title: "Success",
