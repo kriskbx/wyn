@@ -50,4 +50,4 @@
 * ~~Add `all` command to backup all inputs with preconfigured outputs~~ **since 0.3**
 * ~~Add `cron` command and add configuration options to backup inputs only at specified times/days/weeks~~ **since 0.3**
 * At least 50% coverage
-* Make a build script to create a backuppipes.phar for a composer-less but easy installation
+* ~~Make a build script to create a phar for a composer-less but easy installation~~ **since 0.5**
