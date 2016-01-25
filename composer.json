@@ -23,7 +23,9 @@
     "phpsec/phpsec": "^0.6.5",
     "ifsnop/mysqldump-php": "2.*",
     "padraic/phar-updater": "^1.0",
-    "league/flysystem-dropbox": "^1.0"
+    "league/flysystem-dropbox": "^1.0",
+    "league/flysystem-copy": "^1.0",
+    "league/flysystem-gridfs": "^1.0"
   },
   "require-dev": {
     "fabpot/php-cs-fixer": "^1.8",

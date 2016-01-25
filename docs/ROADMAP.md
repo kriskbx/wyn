@@ -30,10 +30,10 @@
 * ~~Dropbox~~ **since 0.6**
 * Amazon S3 V2/V3
 * Azure
-* Copy.com
+* ~~Copy.com~~ **since 0.6**
 * ~~FTP~~ **since 0.2**
 * ~~SFTP~~ **since 0.2**
-* GridFS
+* ~~GridFS~~ **since 0.6**
 * Rackspace
 * WebDAV
 * PHPCR

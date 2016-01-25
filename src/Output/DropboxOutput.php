@@ -3,9 +3,11 @@
 namespace kriskbx\wyn\Output;
 
 use Dropbox\Client;
+use kriskbx\wyn\Contracts\Input\CanReadStream;
+use kriskbx\wyn\Contracts\Output\CanWriteStream;
 use League\Flysystem\Dropbox\DropboxAdapter;
 
-class DropboxOutput extends FlySystemOutput {
+class DropboxOutput extends FlySystemOutput implements CanWriteStream, CanReadStream {
 
 	/**
 	 * @var

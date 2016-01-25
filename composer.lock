@@ -4,9 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9c7888fc2322ad07e1dff430bfc9f248",
-    "content-hash": "96c77d431665f06535f5c05f13c71e95",
+    "hash": "34b16a18890b598c1503594621591562",
+    "content-hash": "0753b4d34548dd73c65bb0e2c15a13ab",
     "packages": [
+        {
+            "name": "barracuda/copy",
+            "version": "1.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/copy-app/php-client-library.git",
+                "reference": "83d8b7e93b3cdc6c6a978f1d88d26b31eac4a255"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/copy-app/php-client-library/zipball/83d8b7e93b3cdc6c6a978f1d88d26b31eac4a255",
+                "reference": "83d8b7e93b3cdc6c6a978f1d88d26b31eac4a255",
+                "shasum": ""
+            },
+            "require": {
+                "eher/oauth": "1.0.*",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-console-highlighter": "0.*",
+                "jakub-onderka/php-parallel-lint": "0.*",
+                "phpunit/phpunit": "~4.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Barracuda\\Copy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Copy PHP library",
+            "homepage": "https://github.com/copy-app/php-client-library",
+            "keywords": [
+                "copy"
+            ],
+            "time": "2015-05-27 21:28:58"
+        },
         {
             "name": "cpliakas/git-wrapper",
             "version": "1.6.1",
@@ -100,6 +142,39 @@
                 "dropbox"
             ],
             "time": "2015-06-29 21:47:57"
+        },
+        {
+            "name": "eher/oauth",
+            "version": "1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EHER/OAuth.git",
+                "reference": "935c1f7709d1c1457de9e250d0e5f29cac06e507"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EHER/OAuth/zipball/935c1f7709d1c1457de9e250d0e5f29cac06e507",
+                "reference": "935c1f7709d1c1457de9e250d0e5f29cac06e507",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "eher/phpunit": "1.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Eher\\OAuth": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "OAuth 1 PHP Library",
+            "time": "2012-12-13 23:48:10"
         },
         {
             "name": "ifsnop/mysqldump-php",
@@ -238,6 +313,53 @@
             "time": "2015-12-19 20:16:43"
         },
         {
+            "name": "league/flysystem-copy",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-copy.git",
+                "reference": "1962b6d8be193fdd0ec039744d676c6b0c0ab112"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-copy/zipball/1962b6d8be193fdd0ec039744d676c6b0c0ab112",
+                "reference": "1962b6d8be193fdd0ec039744d676c6b0c0ab112",
+                "shasum": ""
+            },
+            "require": {
+                "barracuda/copy": "~1.1",
+                "league/flysystem": "~1.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\Copy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "Flysystem adapter for Copy.com",
+            "time": "2015-03-29 11:47:26"
+        },
+        {
             "name": "league/flysystem-dropbox",
             "version": "1.0.1",
             "source": {
@@ -282,6 +404,52 @@
             ],
             "description": "Flysystem adapter for Dropbox",
             "time": "2015-12-19 13:50:27"
+        },
+        {
+            "name": "league/flysystem-gridfs",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-gridfs.git",
+                "reference": "a0f9ba1b763619045796cfbcacf4f945c4127744"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-gridfs/zipball/a0f9ba1b763619045796cfbcacf4f945c4127744",
+                "reference": "a0f9ba1b763619045796cfbcacf4f945c4127744",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "~1.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\GridFS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "Flysystem adapter for MongoDB GridFS",
+            "time": "2015-01-21 22:20:08"
         },
         {
             "name": "league/flysystem-sftp",

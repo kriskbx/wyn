@@ -195,6 +195,22 @@ output:
 | `appSecret` | Dropbox API app secret | String | / | Y |
 | `prefix` | Path prefix | String | / | N |
 
+### Copy.com
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|----------|
+| `consumerKey` | Consumer key | String | / | Y |
+| `consumerSecret` | Consumer secret | String | / | Y |
+| `accessToken` | Access token | String | / | Y |
+| `tokenSecret` | Token secret | String | / | Y |
+| `prefix` | Path prefix | String | / | N |
+
+### GridFS
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|----------|
+| `database` | Database | String | / | Y |
+
 ## Input Provider Options
 
 ### MySQL
