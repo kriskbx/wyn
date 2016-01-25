@@ -134,6 +134,7 @@ class Sync implements SyncContract
     protected function callWorkerFunction($function, $file)
     {
         $arguments = $this->getMethodArguments($function, $file);
+
         $output = call_user_func_array([$this->worker, $function], $arguments);
 
         $this->out($function, ['output' => $output, 'arguments' => $arguments, 'file' => $file]);

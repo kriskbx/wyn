@@ -2,10 +2,12 @@
 
 namespace kriskbx\wyn\Output;
 
+use kriskbx\wyn\Contracts\Input\CanReadStream;
+use kriskbx\wyn\Contracts\Output\CanWriteStream;
 use kriskbx\wyn\Exceptions\PathNotFoundException;
 use League\Flysystem\Adapter\Local;
 
-class LocalOutput extends FlySystemOutput
+class LocalOutput extends FlySystemOutput implements CanWriteStream, CanReadStream
 {
     protected $path;
 

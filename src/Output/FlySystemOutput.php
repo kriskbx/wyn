@@ -2,13 +2,11 @@
 
 namespace kriskbx\wyn\Output;
 
-use kriskbx\wyn\Contracts\Input\CanReadStream;
-use kriskbx\wyn\Contracts\Output\CanWriteStream;
 use kriskbx\wyn\Contracts\CanSkipErrors;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
 
-abstract class FlySystemOutput extends Output implements CanSkipErrors, CanWriteStream, CanReadStream
+abstract class FlySystemOutput extends Output implements CanSkipErrors
 {
     /**
      * @var

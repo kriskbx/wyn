@@ -27,7 +27,7 @@
 
 ## Planned platforms to backup to
 
-* Dropbox
+* ~~Dropbox~~ **since 0.6**
 * Amazon S3 V2/V3
 * Azure
 * Copy.com
@@ -43,8 +43,8 @@
 
 * ~~Encrypt backup~~ **since 0.1**
 * Archive backup
-* Archive Versioning aka tar balls
 * SVN Versioning
+* Tar ball Versioning
 * ~~Define one or multiple outputs for each input in config~~ **since 0.3**
 * Define multiple outputs for single command
 * ~~Add `all` command to backup all inputs with preconfigured outputs~~ **since 0.3**

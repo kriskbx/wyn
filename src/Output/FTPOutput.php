@@ -2,9 +2,11 @@
 
 namespace kriskbx\wyn\Output;
 
+use kriskbx\wyn\Contracts\Input\CanReadStream;
+use kriskbx\wyn\Contracts\Output\CanWriteStream;
 use League\Flysystem\Adapter\Ftp;
 
-class FTPOutput extends FlySystemOutput
+class FTPOutput extends FlySystemOutput  implements CanWriteStream, CanReadStream
 {
     /**
      * Constructor.

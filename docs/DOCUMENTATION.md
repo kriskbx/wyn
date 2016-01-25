@@ -187,6 +187,14 @@ output:
 | `passive` | Use passive mode | Boolean | true | N |
 | `port` | SSH port | Integer | 21 | N |
 
+### Dropbox
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|----------|
+| `accessToken` | Dropbox API access token | String | / | Y |
+| `appSecret` | Dropbox API app secret | String | / | Y |
+| `prefix` | Path prefix | String | / | N |
+
 ## Input Provider Options
 
 ### MySQL
