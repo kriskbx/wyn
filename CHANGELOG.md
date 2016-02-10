@@ -29,3 +29,11 @@
 ### Added
 - Added backup:daemon command that runs the backup:cron every minute
 - Added Dockerfile, Docker Image and Docker Instructions
+
+## [0.6.1] - 2016-02-10
+### Added
+- Added latest tagging in build-script
+### Fixed
+- Fixed xdg mime error in dockerfile
+### Changed
+

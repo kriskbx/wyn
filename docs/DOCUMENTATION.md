@@ -1,5 +1,14 @@
 # wyn docs
 
+## Table of contents
+
+1. [Requirements](#requirements)
+    1. [Docker install](#docker-install)
+    2. [Composer or Phar install](#composer-or-phar-install)
+2. [Features](#features)
+    1. [Supported platforms to backup from](#supported-platforms-to-backup-from)
+    2. [Supported platforms to backup to]()
+
 ## Requirements
 
 ### Docker install
@@ -14,6 +23,8 @@
 * ext-openssl
 * ext-mcrypt
 * ext-ssh2 >= 0.9.0
+
+## Features
 
 ### Supported platforms to backup from
 

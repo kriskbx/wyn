@@ -16,6 +16,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV COMPOSER_HOME /.composer
 ENV CONF_DIR_PHP7_CLI /etc/php/7.0/cli
 ENV PATH ${PATH}:/.composer/vendor/bin
+ENV EDITOR /usr/bin/vim
 
 RUN \
 

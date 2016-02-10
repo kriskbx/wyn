@@ -58,9 +58,10 @@ php -d phar.readonly=off resource/bin/phar-composer.phar build . ./build/wyn.pha
 ###########
 
 echo "Creating Docker Image"
-docker build -t kriskbx/wyn:$newversion .
+IMAGE_ID=$(docker build -t kriskbx/wyn:$newversion . 2>/dev/null | awk '/Successfully built/{print $NF}')
 docker rm wyn || echo "container doesn't exists"
 docker run --name wyn -t -i kriskbx/wyn:$newversion
+docker tag $IMAGE_ID kriskbx/wyn:latest
 
 ###########
 # GIT TAG
@@ -68,3 +69,6 @@ docker run --name wyn -t -i kriskbx/wyn:$newversion
 git add -A .
 git commit -m "release $newversion"
 git tag "$newversion"
+
+echo "You should run the following now:"
+echo "git push origin master --tags && docker push kriskbx/wyn"
