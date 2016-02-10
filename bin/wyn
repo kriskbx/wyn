@@ -5,6 +5,8 @@
 $sourceGlobal = __DIR__ . '/../kriskbx/wyn/src/wyn.php';
 $sourceLocal  = __DIR__ . '/../src/wyn.php';
 
+$GLOBALS['wynWorkingDir'] = __DIR__;
+
 if ( file_exists( $sourceGlobal ) ) {
 	include $sourceGlobal;
 } elseif ( file_exists( $sourceLocal ) ) {

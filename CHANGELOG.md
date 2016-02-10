@@ -24,3 +24,8 @@
 ### Added
 - Added update and rollback commands
 - Added phar-packaging
+
+## [0.6.0] - 2016-02-10
+### Added
+- Added backup:daemon command that runs the backup:cron every minute
+- Added Dockerfile, Docker Image and Docker Instructions

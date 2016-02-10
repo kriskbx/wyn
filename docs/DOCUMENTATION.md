@@ -2,14 +2,18 @@
 
 ## Requirements
 
+### Docker install
+
+* Docker, yay
+
+### Composer or Phar install
+
+* Git
 * PHP 5.6 or later
+* PDO
 * ext-openssl
 * ext-mcrypt
-
-**optional:**
-
-* GIT installed and working if you want to version your backups with GIT - [Download](https://git-scm.com/downloads)
-* PDO for MySQL backups
+* ext-ssh2 >= 0.9.0
 
 ### Supported platforms to backup from
 
@@ -23,10 +27,50 @@
 * Local filesystem
 * FTP
 * SFTP
+* Dropbox
+* copy.com
+* GridFS
 
 ## Installation
 
-### As a phar (recommended)
+### Using Docker (recommended)
+
+Install Docker first:
+
+```
+curl -sSL https://get.docker.com/ | sh
+```
+
+#### Store config inside container
+
+You should mount a data directory when adding the container if you want to store data on your host machine. Replace `/path/to/data/on/host` with the absolute path to the storage on your host machine.
+
+```
+docker \
+    run -d --name wyn --restart always \
+    -v /path/to/data/on/host:/var/wyn \
+    kriskbx/wyn:latest
+```
+
+You can edit the configuration by running:
+
+```
+docker exec -it wyn wyn edit
+```
+
+#### Store config on host machine (recommended)
+
+OR you can mount a config directory and store the configuration on your host machine. Replace `/path/to/config/on/host` with an absolute path to your config directory.
+
+```
+docker \
+    run -d --name wyn --restart always \
+    -v /path/to/data/on/host:/var/wyn \
+    -v /path/to/config/on/host:/root/.wyn \
+    kriskbx/wyn:latest
+```
+
+### As a phar
 
 On unix system run this:
 
@@ -53,34 +97,56 @@ composer global require kriskbx/wyn
 Create a global configuration file and open it in your default editor by running this command:
 
 ```
+# Manual install
 wyn edit
+
+# Docker install
+docker exec -it wyn wyn edit
 ```
 
 Backup from a single input to a single output as specified in the global configuration:
 
 ```
+# Manual install
 wyn backup:single input output
+
+# Docker install
+docker exec -it wyn wyn backup:single input output
 ```
 
 Or use a specific config file:
 
 ```
+# Manual install
 wyn backup:single input output /path/to/config/file.yml
+
+# Docker install
+docker exec -it wyn wyn backup:single input output /path/to/config/file.yml
 ```
 
 If you configured one or multiple outputs for the given input in your config file you can also run this:
 
 ```
+# Manual install
 wyn backup:single input
+
+# Docker install
+docker exec -it wyn wyn backup:single input
 ```
 
 Or you can backup all inputs that got configured outputs:
 
 ```
+# Manual install
 wyn backup:all
+
+# Docker install
+docker exec -it wyn wyn backup:all
 ```
 
 ### Cron
+
+If you installed wyn using Docker you don't need to setup anything. It will run the cron command automatically every minute for you as long as the container runs.
 
 You can specify cron expressions for every input in your config file. Run `crontab -e` and add this command to your crontab file then:
 

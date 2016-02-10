@@ -4,30 +4,28 @@ namespace kriskbx\wyn\Output;
 
 use kriskbx\wyn\Contracts\Input\CanReadStream;
 use kriskbx\wyn\Contracts\Output\CanWriteStream;
-use kriskbx\wyn\Exceptions\PathNotFoundException;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\GridFS\GridFSAdapter;
 use MongoClient;
 
-class GridFSOutput extends FlySystemOutput implements CanWriteStream, CanReadStream {
+class GridFSOutput extends FlySystemOutput implements CanWriteStream, CanReadStream
+{
+    /**
+     * @var
+     */
+    protected $database;
 
-	/**
-	 * @var
-	 */
-	protected $database;
+    /**
+     * Constructor.
+     *
+     * @param $database
+     */
+    public function __construct($database)
+    {
+        $this->database = $database;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param $database
-	 */
-	public function __construct( $database ) {
-		$this->database = $database;
+        $mongoClient = new MongoClient();
+        $gridFs = $mongoClient->selectDB($database)->getGridFS();
 
-		$mongoClient = new MongoClient();
-		$gridFs      = $mongoClient->selectDB( $database )->getGridFS();
-
-		$this->setFilesystem( new GridFSAdapter( $gridFs ) );
-	}
-
+        $this->setFilesystem(new GridFSAdapter($gridFs));
+    }
 }

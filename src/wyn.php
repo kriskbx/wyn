@@ -2,6 +2,7 @@
 
 use kriskbx\wyn\Command\BackupAllCommand;
 use kriskbx\wyn\Command\BackupCronCommand;
+use kriskbx\wyn\Command\BackupDaemonCommand;
 use kriskbx\wyn\Command\BackupSingleCommand;
 use kriskbx\wyn\Command\DecryptCommand;
 use kriskbx\wyn\Command\EditCommand;
@@ -48,6 +49,7 @@ $app = new Application('wyn', $GLOBALS['wynVersion']);
 $app->add(new BackupSingleCommand());
 $app->add(new BackupAllCommand());
 $app->add(new BackupCronCommand());
+$app->add(new BackupDaemonCommand());
 $app->add(new EditCommand());
 $app->add(new DecryptCommand());
 $app->add(new RollbackUpdateCommand());

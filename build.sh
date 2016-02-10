@@ -54,6 +54,15 @@ echo "Creating phar..."
 php -d phar.readonly=off resource/bin/phar-composer.phar build . ./build/wyn.phar
 
 ###########
+# CREATE DOCKER IMAGE
+###########
+
+echo "Creating Docker Image"
+docker build -t kriskbx/wyn:$newversion .
+docker rm wyn || echo "container doesn't exists"
+docker run --name wyn -t -i kriskbx/wyn:$newversion /bin/bash
+
+###########
 # GIT TAG
 ###########
 git add -A .

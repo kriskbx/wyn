@@ -10,7 +10,7 @@ class GlobalConfig
 
     protected static $gitDir = 'versioning';
 
-    protected static $configFile = 'global.yml';
+    protected static $configFile = 'global.yaml';
 
     /**
      * @return string
