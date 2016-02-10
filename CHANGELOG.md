@@ -37,3 +37,9 @@
 - Fixed xdg mime error in dockerfile
 ### Changed
 
+
+## [0.6.2] - 2016-02-11
+### Fixed
+- docker build script fixed running container issues
+### Changed
+

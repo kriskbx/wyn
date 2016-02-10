@@ -59,8 +59,9 @@ php -d phar.readonly=off resource/bin/phar-composer.phar build . ./build/wyn.pha
 
 echo "Creating Docker Image"
 IMAGE_ID=$(docker build -t kriskbx/wyn:$newversion . 2>/dev/null | awk '/Successfully built/{print $NF}')
+docker stop wyn || echo "container not running"
 docker rm wyn || echo "container doesn't exists"
-docker run --name wyn -t -i kriskbx/wyn:$newversion
+docker run --name wyn -d kriskbx/wyn:$newversion
 docker tag $IMAGE_ID kriskbx/wyn:latest
 
 ###########
