@@ -26,7 +26,7 @@ class BackupDaemonCommand extends BackupCommand
         $this->setName('backup:daemon')
              ->setDescription('Runs wyn as a daemon that acts as a cron and executes the backup:cron command on a regular basis')
              ->addArgument('config', InputArgument::OPTIONAL, 'Path to the config file.', GlobalConfig::getConfigFile())
-             ->addOption('interval', null, InputOption::VALUE_OPTIONAL, 'The interval between running the backup:cron command', 60);
+             ->addOption('interval', null, InputOption::VALUE_OPTIONAL, 'The interval between running the backup:cron command', 3600);
 
         $this->setDefaultOptions();
     }
