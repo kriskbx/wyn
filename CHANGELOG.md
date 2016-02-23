@@ -43,3 +43,5 @@
 - docker build script fixed running container issues
 ### Changed
 
+
+## [0.6.3] - 2016-02-23
