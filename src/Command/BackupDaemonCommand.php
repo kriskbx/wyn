@@ -97,7 +97,7 @@ class BackupDaemonCommand extends BackupCommand
         $command .= ($this->input->getOption('ignoreOutput') ? ' --ignoreOutput='.$this->input->getOption('ignoreOutput') : '');
         $command .= ($this->input->getOption('excludeInput') ? ' --excludeInput='.$this->input->getOption('excludeInput') : '');
         $command .= ($this->input->getOption('excludeOutput') ? ' --excludeOutput='.$this->input->getOption('excludeOutput') : '');
-        $command .= ($this->input->getOption('no-interaction') ? ' --no-interaction=true' : '');
+        $command .= ($this->input->getOption('no-interaction') ? ' --no-interaction' : '');
         $command .= ($this->input->getOption('delete') ? ' --delete='.$this->input->getOption('delete') : '');
 
         return $command;

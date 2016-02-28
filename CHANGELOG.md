@@ -58,3 +58,9 @@
 
 
 ## [0.6.6] - 2016-02-28
+
+## [0.6.7] - 2016-02-28
+### Fixed
+- fixed issue with wrong no-interaction flag when using the daemon
+### Changed
+
