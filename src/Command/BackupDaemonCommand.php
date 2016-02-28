@@ -47,6 +47,8 @@ class BackupDaemonCommand extends BackupCommand
     {
         parent::execute($consoleInput, $consoleOutput);
 
+        GlobalConfig::preFlight($consoleOutput);
+
         $this->sleep = $consoleInput->getOption('interval');
         $this->workerCommand = $this->buildWorkerCommand();
         $process = $this->makeProcess();
@@ -95,6 +97,7 @@ class BackupDaemonCommand extends BackupCommand
         $command .= ($this->input->getOption('ignoreOutput') ? ' --ignoreOutput='.$this->input->getOption('ignoreOutput') : '');
         $command .= ($this->input->getOption('excludeInput') ? ' --excludeInput='.$this->input->getOption('excludeInput') : '');
         $command .= ($this->input->getOption('excludeOutput') ? ' --excludeOutput='.$this->input->getOption('excludeOutput') : '');
+        $command .= ($this->input->getOption('no-interaction') ? ' --no-interaction=true' : '');
         $command .= ($this->input->getOption('delete') ? ' --delete='.$this->input->getOption('delete') : '');
 
         return $command;

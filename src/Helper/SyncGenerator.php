@@ -2,7 +2,6 @@
 
 namespace kriskbx\wyn\Helper;
 
-use Exception;
 use kriskbx\wyn\Application;
 use kriskbx\wyn\Contracts\Command\BackupCommand;
 use kriskbx\wyn\Contracts\Config\Config as ConfigContract;
@@ -49,11 +48,17 @@ trait SyncGenerator
             } elseif (isset($inputOptions[ $key ]) && in_array($key, SyncSettings::getInputBaseOptions())) {
                 call_user_func_array([$settings, 'set'.ucfirst($key)], [$inputOptions[ $key ]]);
             } elseif (isset($inputOptions[ str_replace('Input', '', $key) ]) && in_array(str_replace('Input', '', $key), SyncSettings::getInputBaseOptions())) {
-                call_user_func_array([$settings, 'set'.ucfirst($key)], [$inputOptions[ str_replace('Input', '', $key) ]]);
+                call_user_func_array([
+                    $settings,
+                    'set'.ucfirst($key),
+                ], [$inputOptions[ str_replace('Input', '', $key) ]]);
             } elseif (isset($outputOptions[ $key ]) && in_array($key, SyncSettings::getOutputBaseOptions())) {
                 call_user_func_array([$settings, 'set'.ucfirst($key)], [$outputOptions[ $key ]]);
             } elseif (isset($outputOptions[ str_replace('Output', '', $key) ]) && in_array(str_replace('Output', '', $key), SyncSettings::getOutputBaseOptions())) {
-                call_user_func_array([$settings, 'set'.ucfirst($key)], [$outputOptions[ str_replace('Output', '', $key) ]]);
+                call_user_func_array([
+                    $settings,
+                    'set'.ucfirst($key),
+                ], [$outputOptions[ str_replace('Output', '', $key) ]]);
             } elseif ($config->hasOption($key) && in_array($key, SyncSettings::getGeneralBaseOptions())) {
                 call_user_func_array([$settings, 'set'.ucfirst($key)], [$config->getOption($key)]);
             }
@@ -77,13 +82,13 @@ trait SyncGenerator
      * @param string         $name
      * @param ConfigContract $config
      * @param BackupCommand  $command
-     *
-     * @throws PathNotFoundException
-     * @throws Exception
+     * @param bool           $noInteraction
      *
      * @return OutputContract
+     *
+     * @throws PathNotFoundException
      */
-    protected function createOutput($name, ConfigContract $config, BackupCommand $command = null)
+    protected function createOutput($name, ConfigContract $config, BackupCommand $command = null, $noInteraction = false)
     {
         $command = $this->getCommand($command);
 
@@ -100,7 +105,7 @@ trait SyncGenerator
             $helper = $command->getHelper('question');
             $question = new ConfirmationQuestion("<comment>The directory '".$e->getPath()."' doesn't exist. Create it?</comment> <info>[y|n]</info>\n", false);
 
-            if (!$helper->ask($input = $command->getInput(), $output = $command->getOutput(), $question)) {
+            if (!$helper->ask($input = $command->getInput(), $output = $command->getOutput(), $question) && !$noInteraction) {
                 throw $e;
             }
 

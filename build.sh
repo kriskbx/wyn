@@ -1,5 +1,13 @@
 #!/bin/bash
 
+docker=$(docker images)
+
+if [ "$docker" == "Cannot connect to the Docker daemon. Is the docker daemon running on this host?" ]
+then
+    echo "Not in docker shell ..."
+    exit
+fi
+
 ###########
 # CS FIXING
 ###########

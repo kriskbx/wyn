@@ -64,7 +64,7 @@ RUN chmod a+x /usr/local/bin/wyn
 VOLUME ["/root/.composer", "/root/.wyn"]
 
 # Set default container command
-CMD ["backup:daemon"]
+CMD ["backup:daemon", "--no-interaction"]
 
 # Set entrypoint
 ENTRYPOINT ["/usr/local/bin/wyn"]
