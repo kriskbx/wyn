@@ -76,8 +76,7 @@ abstract class BackupCommand extends Command implements BackupCommandContract
              ->addOption('ignoreOutput', null, InputOption::VALUE_OPTIONAL, 'Ignore and skip errors on the output side. <info>[Overrides config]</info>')
              ->addOption('excludeInput', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Exclude files on the input side, accepts glob. <info>[Overrides config]</info>')
              ->addOption('excludeOutput', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Exclude files on the output side, accepts glob. <info>[Overrides config]</info>')
-             ->addOption('delete', null, InputOption::VALUE_OPTIONAL, 'Delete files on the output side. <info>[Overrides config]</info>')
-             ->addOption('no-interaction', null, InputOption::VALUE_OPTIONAL, 'No interaction.', false);
+             ->addOption('delete', null, InputOption::VALUE_OPTIONAL, 'Delete files on the output side. <info>[Overrides config]</info>');
     }
 
     /**
@@ -133,7 +132,7 @@ abstract class BackupCommand extends Command implements BackupCommandContract
 
             // Create IO Handler
             $inputHandler = $this->createInput($inputName, $config);
-            $outputHandler = $this->createOutput($outputName, $config, $consoleInput->getOption('no-interaction'));
+            $outputHandler = $this->createOutput($outputName, $config, null, $consoleInput->getOption('no-interaction'));
 
             // Create Sync Application
             $app = new Application();

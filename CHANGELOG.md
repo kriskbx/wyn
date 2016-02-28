@@ -50,3 +50,9 @@
 ### Added
 - added no-interaction option
 - added no-interaction option as default for daemon on docker image
+
+## [0.6.5] - 2016-02-28
+### Fixed
+- fixed that no-interaction bug introduced with 0.6.4
+### Changed
+
