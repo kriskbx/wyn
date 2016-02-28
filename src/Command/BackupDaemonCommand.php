@@ -73,7 +73,7 @@ class BackupDaemonCommand extends BackupCommand
      *
      * @return Process
      */
-    protected function makeProcess($timeout = 60)
+    protected function makeProcess($timeout = 3400)
     {
         return new Process($this->workerCommand, null, null, null, $timeout);
     }

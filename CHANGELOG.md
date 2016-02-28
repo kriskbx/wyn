@@ -56,3 +56,5 @@
 - fixed that no-interaction bug introduced with 0.6.4
 ### Changed
 
+
+## [0.6.6] - 2016-02-28
